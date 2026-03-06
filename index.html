@@ -217,31 +217,23 @@
     }
 
     .mosaic {
-      margin-top: 22px;
+      margin-top: 28px;
       display: grid;
-      grid-template-columns: 1.2fr 1.2fr 1fr 1fr;
-      gap: 16px;
-      align-items: start;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: center;
     }
 
     .mosaic .tile {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(15, 51, 77, 0.05);
     }
 
     .mosaic .tile img {
       width: 100%;
-      height: auto;
-      max-height: 220px;
-      object-fit: contain;
-      background: #ffffff;
-    }
-
-    .mosaic .tile.large img {
-      max-height: 280px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
     }
 
     .overview-strip {
@@ -288,10 +280,13 @@
         height: 48px;
       }
 
-      .image-card img,
-      .mosaic .tile img,
-      .mosaic .tile.large img {
+      .image-card img {
         max-height: none;
+      }
+
+      .mosaic .tile img {
+        height: auto;
+        max-height: 320px;
       }
     }
   </style>
@@ -352,18 +347,10 @@
         </div>
 
         <div class="mosaic">
-          <div class="tile large">
-            <img src="pic/Picture10.png" alt="" />
-          </div>
-          <div class="tile large">
-            <img src="pic/Picture7.png" alt="" />
-          </div>
-          <div class="tile">
-            <img src="pic/Picture8.png" alt="" />
-          </div>
-          <div class="tile">
-            <img src="pic/Picture9.png" alt="" />
-          </div>
+          <div class="tile"><img src="pic/Picture6.png" alt="" /></div>
+          <div class="tile"><img src="pic/Picture7.png" alt="" /></div>
+          <div class="tile"><img src="pic/Picture8.png" alt="" /></div>
+          <div class="tile"><img src="pic/Picture9.png" alt="" /></div>
         </div>
 
         <div class="overview-strip">
