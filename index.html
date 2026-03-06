@@ -20,6 +20,7 @@
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -103,15 +104,24 @@
       border-radius: 22px;
       padding: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
     }
 
     .logo-panel img {
+      height: 70px;
+      width: auto;
+      object-fit: contain;
       display: block;
-      width: 100%;
-      border-radius: 14px;
     }
 
-    main { padding: 34px 0 56px; }
+    main {
+      padding: 34px 0 56px;
+    }
 
     .section {
       background: var(--card);
@@ -180,7 +190,9 @@
       color: var(--muted);
     }
 
-    .bullet-list li { margin-bottom: 10px; }
+    .bullet-list li {
+      margin-bottom: 10px;
+    }
 
     .image-card img {
       width: 100%;
@@ -221,14 +233,6 @@
 
     .mosaic .tile.large img {
       height: 250px;
-    }
-
-    .tile p {
-      margin: 0;
-      padding: 12px 14px;
-      font-size: 0.92rem;
-      color: var(--muted);
-      background: white;
     }
 
     .overview-strip {
@@ -275,6 +279,10 @@
       .mosaic .tile.large img {
         height: 220px;
       }
+
+      .logo-panel img {
+        height: 56px;
+      }
     }
   </style>
 </head>
@@ -289,10 +297,10 @@
       </p>
 
       <div class="logo-panel">
-        <img src="pic\Picture1.png">
-        <img src="pic\Picture2.png">
-        <img src="pic\Picture3.png">
-        <img src="pic\Picture4.png">
+        <img src="pic/Picture1.png" alt="Logo 1" />
+        <img src="pic/Picture2.png" alt="Logo 2" />
+        <img src="pic/Picture3.png" alt="Logo 3" />
+        <img src="pic/Picture4.png" alt="Logo 4" />
       </div>
     </div>
   </header>
@@ -327,32 +335,27 @@
 
           <div class="image-card">
             <img src="ed54accc-e8f2-4bba-843c-037b057e88ed.png" alt="Status of global drifter array" />
-            <div class="image-caption">Global drifter array overview illustrating the wide coverage yet sparse and uneven distribution of ocean drifter observations.</div>
+            <div class="image-caption">
+              Global drifter array overview illustrating the wide coverage yet sparse and uneven distribution of ocean drifter observations.
+            </div>
           </div>
         </div>
 
         <div class="mosaic">
-          <div class="tile large"><img src="37f1aec0-cfb8-4b31-8fd5-fd89056049e9.png" alt="" /></div>
-          <div class="tile large"><img src="f4e9c6ea-9567-4259-9be8-7b48c1fa80ef.png" alt="" /></div>
-          <div class="tile"><img src="aab54e48-867a-4e92-b20f-4c7fb31b8f41.png" alt="" /></div>
-          <div class="tile"><img src="3996c2a0-307e-4c1a-8f54-a9d23bcd60f9.png" alt="" /></div>
-          <div class="tile"><img src="e776a3fa-a918-4f53-9ec5-843f9fd27d62.png" alt="" /></div>
-        </div>
           <div class="tile large">
-            <img src="f4e9c6ea-9567-4259-9be8-7b48c1fa80ef.png" alt="Marina coastal environment" />
-            <p>Coastal and marina environments where salinity can vary rapidly due to tides and local hydrodynamics.</p>
+            <img src="37f1aec0-cfb8-4b31-8fd5-fd89056049e9.png" alt="" />
+          </div>
+          <div class="tile large">
+            <img src="f4e9c6ea-9567-4259-9be8-7b48c1fa80ef.png" alt="" />
           </div>
           <div class="tile">
-            <img src="aab54e48-867a-4e92-b20f-4c7fb31b8f41.png" alt="Jet ski on the water" />
-            <p>Dynamic ocean surface conditions during field activity.</p>
+            <img src="aab54e48-867a-4e92-b20f-4c7fb31b8f41.png" alt="" />
           </div>
           <div class="tile">
-            <img src="3996c2a0-307e-4c1a-8f54-a9d23bcd60f9.png" alt="Coastal beach and channel" />
-            <p>Nearshore zones are highly relevant for practical monitoring and reconstruction.</p>
+            <img src="3996c2a0-307e-4c1a-8f54-a9d23bcd60f9.png" alt="" />
           </div>
           <div class="tile">
-            <img src="e776a3fa-a918-4f53-9ec5-843f9fd27d62.png" alt="People standing in shallow water near mangroves" />
-            <p>Complex shallow-water and estuarine environments further increase observation difficulty.</p>
+            <img src="e776a3fa-a918-4f53-9ec5-843f9fd27d62.png" alt="" />
           </div>
         </div>
 
