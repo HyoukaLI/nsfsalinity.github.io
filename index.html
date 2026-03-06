@@ -1,345 +1,443 @@
-export default function OceanSalinityProjectPage() {
-  const sections = [
-    { id: 'background', label: 'Background' },
-    { id: 'dataset', label: 'Dataset' },
-    { id: 'problem', label: 'Problem' },
-    { id: 'method', label: 'Method' },
-    { id: 'deployment', label: 'Deployment' },
-    { id: 'current-stage', label: 'Current Stage' },
-    { id: 'future', label: 'Future Work' },
-  ];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ocean Salinity Imputation Project Page</title>
+  <style>
+    :root {
+      --bg: #f4f8fb;
+      --card: #ffffff;
+      --text: #163047;
+      --muted: #5d7285;
+      --primary: #0f4c81;
+      --secondary: #0f9db7;
+      --accent: #d9eef5;
+      --border: #dbe7ef;
+      --shadow: 0 10px 30px rgba(18, 52, 77, 0.08);
+      --radius: 22px;
+      --maxw: 1200px;
+    }
 
-  const highlights = [
-    'Direct salinity observation along sparse drifter trajectories',
-    'Nearshore suitability in complex and highly dynamic regions',
-    'Tensor-completion perspective for dense salinity reconstruction',
-    'Graph-aware design with local and global relational modeling',
-  ];
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
 
-  const datasetCards = [
-    {
-      title: 'FP Observed (NSF Dataset)',
-      bullets: [
-        'Real-world drifter dataset collected by HBOI at Florida Atlantic University',
-        'After preprocessing, 3 valid deployment days are retained',
-        'This study focuses on Jun 16, 2016 near Fort Pierce Inlet, Florida, USA',
-        '4 trajectories with 11,426 salinity measurements',
-      ],
-      tag: 'Observed',
-    },
-    {
-      title: 'GoM Simulated',
-      bullets: [
-        'Synthetic drifter dataset generated using a numerical ocean current model',
-        'Subset near the Mississippi River delta for sparse-region interpolation',
-        '69 trajectories and 52,253 time steps in the extracted subset',
-        'Organized into GoM-10, GoM-11, and GoM-12 monthly segments',
-      ],
-      tag: 'Simulated',
-    },
-  ];
+    .container {
+      width: min(var(--maxw), calc(100% - 40px));
+      margin: 0 auto;
+    }
 
-  const methodCards = [
-    {
-      title: 'Input Representation',
-      text: 'Sparse drifter trajectories with salinity and auxiliary variables are organized into a partially observed spatio-temporal tensor.',
-    },
-    {
-      title: 'Local Graph',
-      text: 'Captures fine-grained spatial relationships, preserves local hydrological structure, and supports direct information exchange among nearby points.',
-    },
-    {
-      title: 'Global Graph',
-      text: 'Models coarse-grained regional context, long-range dependency, tides, and large-scale ocean circulation patterns with lower computational cost.',
-    },
-    {
-      title: 'Output',
-      text: 'Reconstructs a dense salinity field over space and time for imputation and downstream oceanographic analysis.',
-    },
-  ];
+    .hero {
+      background: linear-gradient(135deg, #08263d 0%, #0f4c81 45%, #1aa6c8 100%);
+      color: white;
+      padding: 68px 0 42px;
+    }
 
-  const deploymentSteps = [
-    'Single-location input or batch input',
-    'Query NOAA CO-OPS API for tide information',
-    'Run OASIS imputation and visualization',
-  ];
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.12;
+      text-align: center;
+    }
 
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-800">
-      <header className="relative overflow-hidden bg-gradient-to-br from-sky-950 via-blue-900 to-cyan-700 text-white">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-300 blur-3xl" />
-          <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-sky-400 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-4 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1 text-sm backdrop-blur">
-              CSIRO Meeting Project Page
-            </div>
-            <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-              Ocean Salinity Imputation using Sparse Drifter Trajectories
-            </h1>
-            <p className="mx-auto mt-6 max-w-3xl text-base text-blue-50 sm:text-lg">
-              A research webpage summarizing the motivation, dataset, problem formulation,
-              graph-aware methodology, deployment pipeline, and current progress for ocean
-              salinity reconstruction under sparse and irregular drifter observations.
-            </p>
+    .hero .subtitle {
+      max-width: 860px;
+      margin: 18px auto 0;
+      text-align: center;
+      font-size: 1.06rem;
+      color: rgba(255,255,255,0.92);
+    }
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm">
-              <span className="rounded-full bg-white/12 px-4 py-2 ring-1 ring-white/20">Griffith University</span>
-              <span className="rounded-full bg-white/12 px-4 py-2 ring-1 ring-white/20">NSF</span>
-              <span className="rounded-full bg-white/12 px-4 py-2 ring-1 ring-white/20">Florida Atlantic University</span>
-              <span className="rounded-full bg-white/12 px-4 py-2 ring-1 ring-white/20">CSIRO</span>
-            </div>
+    .logo-panel {
+      margin: 28px auto 0;
+      max-width: 980px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
 
-            <nav className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              {sections.map((section) => (
-                <a
-                  key={section.id}
-                  href={`#${section.id}`}
-                  className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm transition hover:bg-white/20"
-                >
-                  {section.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-        </div>
-      </header>
+    .logo-panel img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+    }
 
-      <main className="mx-auto max-w-7xl space-y-8 px-6 py-10 lg:px-10 lg:py-14">
-        <section className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-          <div id="background" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Background</p>
-            <h2 className="text-3xl font-bold text-slate-900">Ocean drifters are pillars of modern marine observation</h2>
-            <div className="mt-5 space-y-4 text-[15px] leading-7 text-slate-600">
-              <p>
-                Ocean drifters provide continuous, real-time measurements across vast and often
-                inaccessible regions of the ocean. They support the monitoring of essential
-                oceanographic variables such as salinity, temperature, waves, currents, and
-                atmosphere–ocean fluxes.
-              </p>
-              <p>
-                Compared with remote sensing, drifters offer in-situ validation and can capture
-                fine-grained nearshore dynamics that are difficult to recover from low-resolution
-                satellite products. At the same time, sparse tracks and heterogeneous ocean
-                conditions make modeling and imputation highly challenging.
-              </p>
-            </div>
-          </div>
+    .nav {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
-          <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Key Takeaways</p>
-            <div className="space-y-3">
-              {highlights.map((item) => (
-                <div key={item} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
-                  <p className="text-sm leading-6 text-slate-700">{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 18px;
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      transition: 0.25s ease;
+      font-size: 0.95rem;
+    }
 
-        <section id="dataset" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Dataset</p>
-              <h2 className="text-3xl font-bold text-slate-900">Observed and simulated drifter datasets</h2>
-            </div>
-            <div className="rounded-2xl bg-cyan-50 px-4 py-3 text-sm text-cyan-900 ring-1 ring-cyan-100">
-              Tide-dependent drifter locations and salinity observations vary over time.
-            </div>
-          </div>
+    .nav a:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
+    }
 
-          <div className="mt-8 grid gap-6 lg:grid-cols-2">
-            {datasetCards.map((card) => (
-              <div key={card.title} className="rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200">
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <h3 className="text-xl font-semibold text-slate-900">{card.title}</h3>
-                  <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-200">
-                    {card.tag}
-                  </span>
-                </div>
-                <ul className="space-y-3 text-sm leading-6 text-slate-600">
-                  {card.bullets.map((bullet) => (
-                    <li key={bullet} className="flex gap-3">
-                      <span className="mt-2 h-2 w-2 rounded-full bg-cyan-600" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
+    main {
+      padding: 34px 0 56px;
+    }
 
-        <section id="problem" className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Problem Definition</p>
-            <h2 className="text-3xl font-bold text-slate-900">Sea surface salinity imputation as tensor completion</h2>
-            <div className="mt-5 space-y-4 text-[15px] leading-7 text-slate-600">
-              <p>
-                We formulate salinity imputation under sparse drifter trajectories as a partially
-                observed 4D tensor reconstruction problem over time, latitude, longitude, and
-                sensor-variable dimensions.
-              </p>
-              <p>
-                Given sparse trajectories with observed salinity and auxiliary variables, the goal
-                is to recover a fully dense salinity field for all spatial and temporal grid cells.
-              </p>
-            </div>
-          </div>
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 24px;
+    }
 
-          <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900 p-8 text-white shadow-sm">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Representation</p>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl bg-white/10 p-5 ring-1 ring-white/10">
-                <p className="text-sm text-blue-100">Temporal axis</p>
-                <p className="mt-2 text-2xl font-semibold">T</p>
-                <p className="mt-2 text-sm text-blue-100">Discrete time steps</p>
-              </div>
-              <div className="rounded-2xl bg-white/10 p-5 ring-1 ring-white/10">
-                <p className="text-sm text-blue-100">Spatial axes</p>
-                <p className="mt-2 text-2xl font-semibold">H × W</p>
-                <p className="mt-2 text-sm text-blue-100">Latitude and longitude grids</p>
-              </div>
-              <div className="rounded-2xl bg-white/10 p-5 ring-1 ring-white/10 sm:col-span-2">
-                <p className="text-sm text-blue-100">Variable axis</p>
-                <p className="mt-2 text-2xl font-semibold">C</p>
-                <p className="mt-2 text-sm text-blue-100">Salinity, temperature, pressure, and other sensor variables</p>
-              </div>
-            </div>
-          </div>
-        </section>
+    .section-tag {
+      color: var(--secondary);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
 
-        <section id="method" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Methodology</p>
-              <h2 className="text-3xl font-bold text-slate-900">Graph-aware ocean salinity imputation</h2>
-            </div>
-            <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600 ring-1 ring-slate-200">
-              Input sparse observations → graph reasoning → dense salinity reconstruction
-            </div>
-          </div>
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      line-height: 1.2;
+    }
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {methodCards.map((card) => (
-              <div key={card.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                <h3 className="text-lg font-semibold text-slate-900">{card.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{card.text}</p>
-              </div>
-            ))}
-          </div>
+    .section p {
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
 
-          <div className="mt-8 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl bg-cyan-50 p-6 ring-1 ring-cyan-100">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-800">Local Graph</p>
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-cyan-950">
-                <li>Captures small-scale salinity gradient variation</li>
-                <li>Processes local hydrological features</li>
-                <li>Preserves spatial detail with efficient adjacency modeling</li>
-              </ul>
-            </div>
-            <div className="rounded-3xl bg-blue-50 p-6 ring-1 ring-blue-100">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-800">Global Graph</p>
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-blue-950">
-                <li>Captures large-scale salinity distribution patterns</li>
-                <li>Accounts for ocean currents, tides, and long-distance context</li>
-                <li>Operates at the grid level to reduce computational load</li>
-              </ul>
-            </div>
-          </div>
-        </section>
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
 
-        <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Results Preview</p>
-            <h2 className="text-3xl font-bold text-slate-900">From sparse input to dense prediction</h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              <div className="rounded-3xl bg-slate-50 p-5 text-center ring-1 ring-slate-200">
-                <p className="text-sm font-medium text-slate-500">Input</p>
-                <div className="mt-4 rounded-2xl bg-gradient-to-br from-slate-200 to-slate-100 p-8 text-sm text-slate-500">
-                  Sparse drifter tracks
-                </div>
-              </div>
-              <div className="rounded-3xl bg-slate-50 p-5 text-center ring-1 ring-slate-200">
-                <p className="text-sm font-medium text-slate-500">Prediction</p>
-                <div className="mt-4 rounded-2xl bg-gradient-to-br from-cyan-100 to-blue-100 p-8 text-sm text-slate-600">
-                  Reconstructed salinity field
-                </div>
-              </div>
-              <div className="rounded-3xl bg-slate-50 p-5 text-center ring-1 ring-slate-200">
-                <p className="text-sm font-medium text-slate-500">Reference</p>
-                <div className="mt-4 rounded-2xl bg-gradient-to-br from-blue-200 to-cyan-200 p-8 text-sm text-slate-700">
-                  Real salinity distribution
-                </div>
-              </div>
-            </div>
-          </div>
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
 
-          <div id="deployment" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Application Deployment</p>
-            <h2 className="text-3xl font-bold text-slate-900">Operational workflow</h2>
-            <div className="mt-6 space-y-4">
-              {deploymentSteps.map((step, idx) => (
-                <div key={step} className="flex items-start gap-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
-                    {idx + 1}
-                  </div>
-                  <p className="pt-1 text-sm leading-6 text-slate-700">{step}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
 
-        <section id="current-stage" className="rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-cyan-900 p-8 text-white shadow-sm">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Current Stage</p>
-          <h2 className="text-3xl font-bold">Graph-aware Ocean Salinity Imputation</h2>
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            <div className="rounded-3xl bg-white/10 p-6 ring-1 ring-white/10 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold">Local modeling focus</h3>
-              <p className="mt-3 text-sm leading-6 text-blue-100">
-                Current development emphasizes fine-grained spatial dependency modeling to retain
-                local salinity structure in sparse and irregular drifter observations.
-              </p>
-            </div>
-            <div className="rounded-3xl bg-white/10 p-6 ring-1 ring-white/10 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold">Global context modeling</h3>
-              <p className="mt-3 text-sm leading-6 text-blue-100">
-                The framework also incorporates coarse-grained regional connectivity to model
-                long-distance influence from ocean currents, tides, and broader hydrodynamic patterns.
-              </p>
-            </div>
-          </div>
-        </section>
+    .card {
+      background: #f9fcfe;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+    }
 
-        <section id="future" className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Future Work</p>
-          <h2 className="text-3xl font-bold text-slate-900">Next directions</h2>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            <div className="rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200">
-              <h3 className="text-lg font-semibold text-slate-900">Methodology</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Construct trajectory-aware graphs that better match the physical movement pattern of drifters.
-              </p>
-            </div>
-            <div className="rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200">
-              <h3 className="text-lg font-semibold text-slate-900">Datasets</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Expand experiments to additional observed and simulated ocean salinity datasets.
-              </p>
-            </div>
-            <div className="rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200">
-              <h3 className="text-lg font-semibold text-slate-900">Tasks</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Extend the framework from salinity imputation to broader ocean feature modeling.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.12rem;
+      color: var(--primary);
+    }
+
+    .list {
+      padding-left: 18px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .list li { margin-bottom: 8px; }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #0a2743, #0f4c81);
+      color: white;
+    }
+
+    .highlight-box p,
+    .highlight-box li { color: rgba(255,255,255,0.9); }
+
+    .formula-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .metric {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .flow-step {
+      background: #eef8fb;
+      border: 1px solid #cfe7ef;
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      color: #6b7f90;
+      padding: 10px 0 28px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 980px) {
+      .grid-2, .grid-3, .grid-4, .formula-box, .flow {
+        grid-template-columns: 1fr;
+      }
+      .section {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
+      <p class="subtitle">
+        A project page based on the CSIRO meeting slides, summarizing the background, datasets,
+        problem formulation, graph-aware methodology, deployment workflow, current stage, and future directions.
+      </p>
+
+      <div class="logo-panel">
+        <img src="a4873498-ee5c-4a5e-bae3-6aeea18147fc.png" alt="Griffith University, NSF, Florida Atlantic University, and CSIRO logos" />
+      </div>
+
+      <nav class="nav">
+        <a href="#background">Background</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#problem">Problem</a>
+        <a href="#method">Method</a>
+        <a href="#deployment">Deployment</a>
+        <a href="#future">Future Work</a>
+      </nav>
     </div>
-  );
-}
+  </header>
+
+  <main>
+    <div class="container">
+      <section id="background" class="section">
+        <div class="section-tag">Background</div>
+        <h2>Ocean drifters are a key source for marine observation</h2>
+        <div class="grid-2">
+          <div>
+            <p>
+              Ocean drifters provide continuous in-situ observations over large and often difficult-to-access marine regions.
+              They support monitoring tasks for salinity, temperature, waves, currents, and atmosphere–ocean interactions.
+            </p>
+            <p>
+              Compared with remote sensing products, drifters can better reflect local and nearshore variability, which is especially useful
+              in dynamic coastal environments. However, their measurements remain sparse, irregular, and strongly affected by tides and currents.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Why this matters</h3>
+            <ul class="list">
+              <li>Direct salinity observations along sparse trajectories</li>
+              <li>Strong potential for nearshore and complex-region monitoring</li>
+              <li>Supports dense reconstruction from irregular marine sensing</li>
+              <li>Motivates graph-based spatial and temporal modeling</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="dataset" class="section">
+        <div class="section-tag">Dataset</div>
+        <h2>Observed and simulated drifter datasets</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>FP Observed (NSF Dataset)</h3>
+            <ul class="list">
+              <li>Real-world drifter dataset collected by HBOI at Florida Atlantic University</li>
+              <li>After preprocessing, 3 valid deployment days are retained</li>
+              <li>Focus day: Jun 16, 2016 near Fort Pierce Inlet, Florida, USA</li>
+              <li>4 trajectories with 11,426 salinity measurements</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>GoM Simulated</h3>
+            <ul class="list">
+              <li>Synthetic drifter data generated from a numerical ocean current model</li>
+              <li>Subset extracted near the Mississippi River delta</li>
+              <li>69 trajectories and 52,253 time steps in the studied subset</li>
+              <li>Organized into GoM-10, GoM-11, and GoM-12 monthly segments</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="problem" class="section highlight-box">
+        <div class="section-tag" style="color:#9ee7f2;">Problem Definition</div>
+        <h2>Sea surface salinity imputation as tensor completion</h2>
+        <p>
+          The task is formulated as a partially observed tensor reconstruction problem. Given sparse drifter trajectories with salinity and auxiliary variables,
+          the goal is to recover a dense salinity field across time and space.
+        </p>
+        <div class="formula-box">
+          <div class="metric">
+            <strong>T</strong>
+            Temporal steps
+          </div>
+          <div class="metric">
+            <strong>H × W</strong>
+            Spatial grid over latitude and longitude
+          </div>
+          <div class="metric">
+            <strong>C</strong>
+            Sensor and environmental variables
+          </div>
+        </div>
+      </section>
+
+      <section id="method" class="section">
+        <div class="section-tag">Method</div>
+        <h2>Graph-aware ocean salinity imputation</h2>
+        <div class="grid-4">
+          <div class="card">
+            <h3>Input Representation</h3>
+            <p>Sparse drifter trajectories are organized into a partially observed spatio-temporal tensor with salinity and auxiliary measurements.</p>
+          </div>
+          <div class="card">
+            <h3>Local Graph</h3>
+            <p>Captures local hydrological structure and short-range spatial dependencies to preserve fine-grained salinity variation.</p>
+          </div>
+          <div class="card">
+            <h3>Global Graph</h3>
+            <p>Models long-range context such as tides, currents, and large-scale circulation with coarser regional dependencies.</p>
+          </div>
+          <div class="card">
+            <h3>Output</h3>
+            <p>Produces a dense salinity field for imputation, reconstruction, and downstream oceanographic analysis.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:18px;">
+          <div class="card">
+            <h3>Local modeling focus</h3>
+            <ul class="list">
+              <li>Small-scale salinity gradient variation</li>
+              <li>Fine-grained local feature propagation</li>
+              <li>Retention of nearshore structural detail</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Global modeling focus</h3>
+            <ul class="list">
+              <li>Long-distance regional dependency</li>
+              <li>Tidal and circulation-driven influence</li>
+              <li>Lower computational cost at grid level</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-tag">Results Preview</div>
+        <h2>From sparse input to dense prediction</h2>
+        <div class="flow">
+          <div class="flow-step">Sparse drifter trajectories</div>
+          <div class="flow-step">Graph-based salinity reconstruction</div>
+          <div class="flow-step">Dense salinity field / reference comparison</div>
+        </div>
+      </section>
+
+      <section id="deployment" class="section">
+        <div class="section-tag">Deployment</div>
+        <h2>Operational workflow</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Step 1</h3>
+            <p>Accept a single location input or batch location input.</p>
+          </div>
+          <div class="card">
+            <h3>Step 2</h3>
+            <p>Query NOAA CO-OPS API to retrieve tide information associated with the input region.</p>
+          </div>
+          <div class="card">
+            <h3>Step 3</h3>
+            <p>Run OASIS imputation and produce salinity reconstruction with visualization outputs.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-tag">Current Stage</div>
+        <h2>Graph-aware ocean salinity imputation</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Local graph branch</h3>
+            <p>The current framework emphasizes preserving local salinity structure under sparse and irregular drifter observations.</p>
+          </div>
+          <div class="card">
+            <h3>Global graph branch</h3>
+            <p>Regional context is integrated to better capture large-scale ocean dynamics and long-range environmental effects.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="future" class="section">
+        <div class="section-tag">Future Work</div>
+        <h2>Next directions</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Methodology</h3>
+            <p>Construct more trajectory-aware graph structures that better align with real drifter movement patterns.</p>
+          </div>
+          <div class="card">
+            <h3>Datasets</h3>
+            <p>Expand experiments to more observed and simulated ocean salinity datasets.</p>
+          </div>
+          <div class="card">
+            <h3>Tasks</h3>
+            <p>Extend the framework beyond salinity imputation to broader ocean feature modeling and forecasting tasks.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    Project page generated from the CSIRO meeting presentation.
+  </footer>
+</body>
+</html>
