@@ -3,31 +3,85 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>我的第一个网页</title>
-  <link rel="stylesheet" href="./style.css" />
+  <title>Research Project Page</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="container">
-    <h1>你好，我的网页上线啦</h1>
-    <p class="subtitle">这是一个最小可运行的静态网页模板。</p>
-    <button id="btn">点我一下</button>
+  <header class="hero">
+    <div class="container">
+      <h1>My Research Project</h1>
+      <p class="subtitle">
+        A simple webpage for presenting Introduction, Method, and Results.
+      </p>
+
+      <nav class="nav">
+        <a href="#introduction">Introduction</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="container grid">
-    <section class="card">
-      <h2>模块 1</h2>
-      <p>这里可以放简介、项目介绍、论文链接等。</p>
+  <main class="container">
+    <section id="introduction" class="section card">
+      <h2>Introduction</h2>
+      <p>
+        This section introduces the research background, motivation, and problem setting.
+        You can explain why this task is important, what the current limitations are,
+        and what gap your work aims to solve.
+      </p>
+      <p>
+        For example, if this is your dynamic graph project, you can describe the data,
+        the task definition, and why temporal evolution and textual attributes matter.
+      </p>
     </section>
-    <section class="card">
-      <h2>模块 2</h2>
-      <p>这里可以放图片、表格、联系方式等。</p>
+
+    <section id="method" class="section card">
+      <h2>Method</h2>
+      <p>
+        This section presents the overall framework of your method.
+        You can describe the pipeline, model architecture, or modules here.
+      </p>
+
+      <div class="method-grid">
+        <div class="mini-card">
+          <h3>Module 1</h3>
+          <p>Briefly describe the first core component of your method.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Module 2</h3>
+          <p>Briefly describe the second module, such as neighbor selection.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Module 3</h3>
+          <p>Briefly describe the third module, such as memory bank or consistency modeling.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="section card">
+      <h2>Results</h2>
+      <p>
+        This section shows your experimental results, visualizations, and findings.
+      </p>
+
+      <div class="results-box">
+        <div>
+          <h3>Quantitative Results</h3>
+          <p>Add your table or main metrics here, such as MAE, RMSE, Accuracy, or F1.</p>
+        </div>
+        <div>
+          <h3>Visualization</h3>
+          <p>Add figures such as framework illustration, heatmaps, or performance comparison plots.</p>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="container footer">
-    <span>© 2026 Bo Li</span>
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Your Name</p>
+    </div>
   </footer>
-
-  <script src="./main.js"></script>
 </body>
 </html>
