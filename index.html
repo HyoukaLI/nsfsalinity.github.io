@@ -29,6 +29,12 @@
       line-height: 1.65;
     }
 
+    img {
+      display: block;
+      max-width: 100%;
+      image-rendering: auto;
+    }
+
     .container {
       width: min(var(--maxw), calc(100% - 40px));
       margin: 0 auto;
@@ -100,23 +106,22 @@
     .logo-panel {
       margin: 30px auto 0;
       max-width: 980px;
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.95);
       border-radius: 22px;
-      padding: 18px;
+      padding: 18px 22px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 30px;
+      gap: 28px;
       flex-wrap: wrap;
     }
 
     .logo-panel img {
-      height: 70px;
+      height: 60px;
       width: auto;
+      max-width: 180px;
       object-fit: contain;
-      display: block;
     }
 
     main {
@@ -196,9 +201,11 @@
 
     .image-card img {
       width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
+      background: #ffffff;
+      padding: 10px;
     }
 
     .image-caption {
@@ -214,6 +221,7 @@
       display: grid;
       grid-template-columns: 1.2fr 1.2fr 1fr 1fr;
       gap: 16px;
+      align-items: start;
     }
 
     .mosaic .tile {
@@ -226,13 +234,14 @@
 
     .mosaic .tile img {
       width: 100%;
-      height: 190px;
-      object-fit: cover;
-      display: block;
+      height: auto;
+      max-height: 220px;
+      object-fit: contain;
+      background: #ffffff;
     }
 
     .mosaic .tile.large img {
-      height: 250px;
+      max-height: 280px;
     }
 
     .overview-strip {
@@ -275,13 +284,14 @@
         grid-template-columns: 1fr;
       }
 
-      .mosaic .tile img,
-      .mosaic .tile.large img {
-        height: 220px;
+      .logo-panel img {
+        height: 48px;
       }
 
-      .logo-panel img {
-        height: 56px;
+      .image-card img,
+      .mosaic .tile img,
+      .mosaic .tile.large img {
+        max-height: none;
       }
     }
   </style>
@@ -343,7 +353,7 @@
 
         <div class="mosaic">
           <div class="tile large">
-            <img src="pic/Picture6.jpg" alt="" />
+            <img src="pic/Picture6.png" alt="" />
           </div>
           <div class="tile large">
             <img src="pic/Picture7.png" alt="" />
