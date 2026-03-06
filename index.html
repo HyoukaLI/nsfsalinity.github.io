@@ -1,378 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ocean Salinity Imputation Project Page</title>
-  <style>
-    :root {
-      --bg: #f4f8fb;
-      --card: #ffffff;
-      --text: #183247;
-      --muted: #5d7285;
-      --primary: #0c4673;
-      --secondary: #1497b8;
-      --border: #d8e5ee;
-      --shadow: 0 14px 34px rgba(15, 51, 77, 0.09);
-      --radius: 24px;
-      --maxw: 1220px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocean Salinity Imputation Project Page</title>
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+<style>
+:root{
+--bg:#f4f8fb;
+--card:#ffffff;
+--text:#183247;
+--muted:#5d7285;
+--primary:#0c4673;
+--secondary:#1497b8;
+--border:#d8e5ee;
+--radius:24px;
+--maxw:1220px;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #eef5f9 0%, #f8fbfd 100%);
-      color: var(--text);
-      line-height: 1.65;
-    }
+*{box-sizing:border-box}
 
-    img {
-      display: block;
-      max-width: 100%;
-      image-rendering: auto;
-    }
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(180deg,#eef5f9 0%,#f8fbfd 100%);
+color:var(--text);
+line-height:1.6
+}
 
-    .container {
-      width: min(var(--maxw), calc(100% - 40px));
-      margin: 0 auto;
-    }
+img{
+max-width:100%;
+display:block
+}
 
-    .hero {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, #08263d 0%, #0f4c81 48%, #1aa6c8 100%);
-      color: white;
-      padding: 72px 0 48px;
-    }
+.container{
+width:min(var(--maxw),calc(100% - 40px));
+margin:auto
+}
 
-    .hero::before,
-    .hero::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(8px);
-      opacity: 0.18;
-    }
+/* HERO */
+.hero{
+background:linear-gradient(135deg,#08263d 0%,#0f4c81 48%,#1aa6c8 100%);
+color:white;
+padding:80px 0 50px;
+text-align:center
+}
 
-    .hero::before {
-      width: 360px;
-      height: 360px;
-      background: #74e4ff;
-      top: -120px;
-      right: -80px;
-    }
+.hero h1{
+font-size:clamp(2.3rem,5vw,4.5rem);
+margin:10px 0
+}
 
-    .hero::after {
-      width: 260px;
-      height: 260px;
-      background: #ffffff;
-      bottom: -120px;
-      left: -60px;
-    }
+.subtitle{
+max-width:900px;
+margin:auto;
+opacity:.95
+}
 
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
+.logo-panel{
+margin:35px auto 0;
+background:white;
+border-radius:22px;
+padding:18px 25px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:35px;
+flex-wrap:wrap;
+max-width:900px
+}
 
-    .eyebrow {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08);
-      font-size: 0.9rem;
-      letter-spacing: 0.04em;
-      margin-bottom: 18px;
-    }
+.logo-panel img{
+height:60px;
+width:auto
+}
 
-    h1 {
-      margin: 0;
-      font-size: clamp(2.3rem, 5vw, 4.5rem);
-      line-height: 1.08;
-    }
+main{
+padding:40px 0
+}
 
-    .subtitle {
-      max-width: 900px;
-      margin: 18px auto 0;
-      font-size: 1.08rem;
-      color: rgba(255,255,255,0.92);
-    }
+.section{
+background:white;
+border-radius:var(--radius);
+padding:32px;
+margin-bottom:30px
+}
 
-    .logo-panel {
-      margin: 30px auto 0;
-      max-width: 980px;
-      background: rgba(255,255,255,0.95);
-      border-radius: 22px;
-      padding: 18px 22px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
+.section-tag{
+font-size:.8rem;
+letter-spacing:.15em;
+color:var(--secondary);
+font-weight:700
+}
 
-    .logo-panel img {
-      height: 60px;
-      width: auto;
-      max-width: 180px;
-      object-fit: contain;
-    }
+.section h2{
+margin:10px 0 15px;
+font-size:2rem
+}
 
-    main {
-      padding: 34px 0 56px;
-    }
+.lead{
+max-width:900px;
+color:var(--muted)
+}
 
-    .section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 30px;
-      margin-bottom: 24px;
-    }
+/* BACKGROUND GRID */
+.background-grid{
+display:grid;
+grid-template-columns:1.1fr .9fr;
+gap:24px;
+margin-top:25px
+}
 
-    .section-tag {
-      color: var(--secondary);
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
+.text-card{
+padding:20px;
+background:#f7fbfe;
+border-radius:16px
+}
 
-    .section h2 {
-      margin: 0 0 14px;
-      font-size: clamp(1.7rem, 3vw, 2.5rem);
-      line-height: 1.18;
-    }
+.text-card h3{
+margin-top:0;
+color:var(--primary)
+}
 
-    .lead {
-      max-width: 880px;
-      color: var(--muted);
-      font-size: 1rem;
-    }
+.bullet-list{
+padding-left:18px
+}
 
-    .background-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 22px;
-      margin-top: 24px;
-      align-items: start;
-    }
+.image-card img{
+width:100%;
+height:auto
+}
 
-    .text-card,
-    .image-card {
-      background: #fbfdfe;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-    }
+.image-caption{
+font-size:.9rem;
+color:var(--muted);
+padding-top:8px
+}
 
-    .text-card {
-      padding: 24px;
-    }
+/* IMAGE MOSAIC */
+.mosaic{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+margin-top:25px
+}
 
-    .text-card h3 {
-      margin: 0 0 12px;
-      font-size: 1.2rem;
-      color: var(--primary);
-    }
+.mosaic img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:10px
+}
 
-    .text-card p {
-      margin: 0 0 12px;
-      color: var(--muted);
-    }
+/* OVERVIEW BOXES */
+.overview-strip{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+margin-top:30px
+}
 
-    .bullet-list {
-      margin: 0;
-      padding-left: 20px;
-      color: var(--muted);
-    }
+.overview-box{
+padding:18px;
+background:#f3f8fb;
+border-radius:14px
+}
 
-    .bullet-list li {
-      margin-bottom: 10px;
-    }
+/* PROBLEM SECTION */
+.problem-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:22px;
+margin-top:25px
+}
 
-    .image-card img {
-      width: 100%;
-      height: auto;
-      max-height: 420px;
-      object-fit: contain;
-      background: #ffffff;
-      padding: 10px;
-    }
+.problem-card{
+background:#f7fbfe;
+padding:22px;
+border-radius:16px
+}
 
-    .image-caption {
-      padding: 14px 16px;
-      font-size: 0.94rem;
-      color: var(--muted);
-      background: white;
-      border-top: 1px solid var(--border);
-    }
+.problem-card h3{
+margin-top:0;
+color:var(--primary)
+}
 
-    .mosaic {
-      margin-top: 28px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      align-items: center;
-    }
+/* METHOD SECTION */
+.method-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+margin-top:25px
+}
 
-    .mosaic .tile {
-      border-radius: 12px;
-      overflow: hidden;
-    }
+.method-card{
+background:#f7fbfe;
+padding:22px;
+border-radius:16px
+}
 
-    .mosaic .tile img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border-radius: 12px;
-    }
+.method-card h3{
+margin-top:0;
+color:var(--primary)
+}
 
-    .overview-strip {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
+footer{
+text-align:center;
+padding:30px;
+color:#6b7f90
+}
 
-    .overview-box {
-      background: linear-gradient(180deg, #f8fcfe 0%, #eef7fb 100%);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-    }
+@media(max-width:900px){
 
-    .overview-box h4 {
-      margin: 0 0 8px;
-      color: var(--primary);
-      font-size: 1.05rem;
-    }
+.background-grid,
+.problem-grid,
+.method-grid,
+.overview-strip,
+.mosaic{
+ grid-template-columns:1fr
+}
 
-    .overview-box p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
+.mosaic img{
+height:auto
+}
 
-    footer {
-      text-align: center;
-      color: #6b7f90;
-      padding: 4px 0 30px;
-      font-size: 0.94rem;
-    }
-
-    @media (max-width: 1024px) {
-      .background-grid,
-      .mosaic,
-      .overview-strip {
-        grid-template-columns: 1fr;
-      }
-
-      .logo-panel img {
-        height: 48px;
-      }
-
-      .image-card img {
-        max-height: none;
-      }
-
-      .mosaic .tile img {
-        height: auto;
-        max-height: 320px;
-      }
-    }
-  </style>
+}
+</style>
 </head>
+
 <body>
-  <header class="hero">
-    <div class="container hero-inner">
-      <div class="eyebrow">Project Homepage</div>
-      <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
-      <p class="subtitle">
-        A homepage focused on the overall task title and background, showing the global drifter observation context,
-        field deployment setting, and coastal environments that motivate sparse marine salinity reconstruction.
-      </p>
 
-      <div class="logo-panel">
-        <img src="pic/Picture1.png" alt="Logo 1" />
-        <img src="pic/Picture2.png" alt="Logo 2" />
-        <img src="pic/Picture3.png" alt="Logo 3" />
-        <img src="pic/Picture4.png" alt="Logo 4" />
-      </div>
-    </div>
-  </header>
+<header class="hero">
+<div class="container">
+<h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
+<p class="subtitle">
+A homepage focused on the overall task title and background, showing the global drifter observation context,
+field deployment setting, and coastal environments that motivate sparse marine salinity reconstruction.
+</p>
 
-  <main>
-    <div class="container">
-      <section class="section" id="background">
-        <div class="section-tag">Background</div>
-        <h2>Why sparse drifter trajectories matter for ocean salinity modeling</h2>
-        <p class="lead">
-          Ocean drifters offer a valuable way to observe real marine environments, but they usually sample only sparse trajectories rather than dense spatial fields.
-          This creates a fundamental gap between what is observed and what ocean analysis or decision-making needs: a continuous understanding of salinity variation over space and time.
-        </p>
+<div class="logo-panel">
+<img src="pic/Picture1.png">
+<img src="pic/Picture2.png">
+<img src="pic/Picture3.png">
+<img src="pic/Picture4.png">
+</div>
 
-        <div class="background-grid">
-          <div class="text-card">
-            <h3>Research motivation</h3>
-            <p>
-              Salinity is a key indicator of ocean dynamics, freshwater transport, mixing processes, and coastal environmental change. In practice,
-              drifter-based measurements are sparse, irregular, and strongly influenced by local currents, tides, and regional circulation.
-            </p>
-            <p>
-              The core task is therefore to infer dense salinity structure from limited moving observations. This requires a method that can combine
-              local coastal patterns with broader regional relationships.
-            </p>
-            <ul class="bullet-list">
-              <li>Global drifter observations show the scale and sparsity of the monitoring problem.</li>
-              <li>Field deployment images highlight how in-situ observations are acquired in real ocean environments.</li>
-              <li>Coastal scenes motivate why nearshore salinity reconstruction is practically important.</li>
-            </ul>
-          </div>
+</div>
+</header>
 
-          <div class="image-card">
-            <img src="pic/Picture5.png" alt="Status of global drifter array" />
-            <div class="image-caption">
-              Global drifter array overview illustrating the wide coverage yet sparse and uneven distribution of ocean drifter observations.
-            </div>
-          </div>
-        </div>
+<main>
+<div class="container">
 
-        <div class="mosaic">
-          <div class="tile"><img src="pic/Picture6.png" alt="" /></div>
-          <div class="tile"><img src="pic/Picture7.png" alt="" /></div>
-          <div class="tile"><img src="pic/Picture8.png" alt="" /></div>
-          <div class="tile"><img src="pic/Picture9.png" alt="" /></div>
-        </div>
+<section class="section">
+<div class="section-tag">Background</div>
+<h2>Why sparse drifter trajectories matter for ocean salinity modeling</h2>
 
-        <div class="overview-strip">
-          <div class="overview-box">
-            <h4>Observation challenge</h4>
-            <p>Drifter measurements are informative but spatially sparse, irregular, and incomplete across time and region.</p>
-          </div>
-          <div class="overview-box">
-            <h4>Environmental complexity</h4>
-            <p>Nearshore and estuarine waters are shaped by tides, currents, bathymetry, and freshwater influence.</p>
-          </div>
-          <div class="overview-box">
-            <h4>Modeling goal</h4>
-            <p>Recover a dense salinity field from sparse moving trajectories while preserving both local detail and global context.</p>
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
+<p class="lead">
+Ocean drifters offer a valuable way to observe real marine environments, but they usually sample only sparse trajectories rather than dense spatial fields.
+This creates a fundamental gap between what is observed and what ocean analysis or decision-making needs.
+</p>
 
-  <footer>
-    Homepage draft centered on title and background with the uploaded field and environment images.
-  </footer>
+<div class="background-grid">
+
+<div class="text-card">
+<h3>Research motivation</h3>
+<p>
+Salinity is a key indicator of ocean dynamics, freshwater transport, mixing processes, and coastal environmental change.
+</p>
+
+<ul class="bullet-list">
+<li>Global drifter observations show the scale and sparsity of the monitoring problem.</li>
+<li>Field deployment images highlight how in-situ observations are acquired in real ocean environments.</li>
+<li>Coastal scenes motivate why nearshore salinity reconstruction is practically important.</li>
+</ul>
+</div>
+
+<div class="image-card">
+<img src="pic/Picture5.png">
+<div class="image-caption">
+Global drifter array overview illustrating the sparse distribution of ocean drifter observations.
+</div>
+</div>
+
+</div>
+
+<div class="mosaic">
+<img src="pic/Picture6.png">
+<img src="pic/Picture7.png">
+<img src="pic/Picture8.png">
+<img src="pic/Picture9.png">
+</div>
+
+<div class="overview-strip">
+
+<div class="overview-box">
+<h4>Observation challenge</h4>
+<p>Drifter measurements are informative but spatially sparse.</p>
+</div>
+
+<div class="overview-box">
+<h4>Environmental complexity</h4>
+<p>Nearshore waters are shaped by tides, currents and freshwater influence.</p>
+</div>
+
+<div class="overview-box">
+<h4>Modeling goal</h4>
+<p>Recover a dense salinity field from sparse moving trajectories.</p>
+</div>
+
+</div>
+</section>
+
+
+<section class="section">
+<div class="section-tag">Problem</div>
+<h2>Ocean salinity imputation from sparse drifter trajectories</h2>
+
+<div class="problem-grid">
+
+<div class="problem-card">
+<h3>NSF Drifter Dataset</h3>
+<p>
+The NSF drifter dataset records sea surface salinity along drifting trajectories.
+Observations vary dynamically with ocean tides and currents.
+</p>
+
+<ul>
+<li>Tidal effects influence drifter locations and salinity values</li>
+<li>Observations are sparse and irregular</li>
+<li>Continuous spatial salinity fields are unavailable</li>
+</ul>
+</div>
+
+<div class="problem-card">
+<h3>Problem Definition</h3>
+<p>
+We formulate sea surface salinity imputation under sparse drifter trajectories
+as a tensor completion problem.
+</p>
+
+<p>
+Given partially observed drifter trajectories with salinity and auxiliary variables,
+the objective is to reconstruct a complete spatial-temporal salinity field.
+</p>
+</div>
+
+</div>
+</section>
+
+
+<section class="section">
+<div class="section-tag">Method</div>
+<h2>Overview of the salinity imputation framework</h2>
+
+<div class="method-grid">
+
+<div class="method-card">
+<h3>Input</h3>
+<p>
+Sparse drifter trajectories containing partial salinity observations together with environmental variables.
+</p>
+</div>
+
+<div class="method-card">
+<h3>Model</h3>
+<p>
+A graph-aware learning framework models local hydrological relationships and large-scale ocean structures.
+</p>
+</div>
+
+<div class="method-card">
+<h3>Output</h3>
+<p>
+Reconstructed continuous sea surface salinity fields across space and time.
+</p>
+</div>
+
+</div>
+</section>
+
+
+</div>
+</main>
+
+<footer>
+Ocean Salinity Imputation Project Page
+</footer>
+
 </body>
 </html>
