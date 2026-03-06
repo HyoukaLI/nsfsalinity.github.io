@@ -38,6 +38,38 @@ width:min(var(--maxw),calc(100% - 40px));
 margin:auto
 }
 
+.top-nav-wrap{
+position:sticky;
+top:0;
+z-index:20;
+backdrop-filter:blur(10px);
+background:rgba(8,38,61,.82);
+border-bottom:1px solid rgba(255,255,255,.08)
+}
+
+.top-nav{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
+padding:14px 0
+}
+
+.top-nav a{
+color:#fff;
+text-decoration:none;
+font-size:.95rem;
+padding:8px 14px;
+border-radius:999px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.12)
+}
+
+.top-nav a:hover{
+background:rgba(255,255,255,.16)
+}
+
 /* HERO */
 .hero{
 background:linear-gradient(135deg,#08263d 0%,#0f4c81 48%,#1aa6c8 100%);
@@ -166,6 +198,23 @@ background:#f3f8fb;
 border-radius:14px
 }
 
+.single-figure{
+margin-top:22px;
+border-radius:18px;
+overflow:hidden;
+background:#fff
+}
+
+.single-figure img{
+width:100%;
+height:auto;
+display:block
+}
+
+.figure-light{
+border:1px solid var(--border)
+}
+
 /* PROBLEM SECTION */
 .problem-grid{
 display:grid;
@@ -231,6 +280,17 @@ height:auto
 <body>
 
 <header class="hero">
+<div class="top-nav-wrap">
+  <div class="container">
+    <nav class="top-nav">
+      <a href="#background">Background</a>
+      <a href="#nsf-dataset">NSF-Dataset</a>
+      <a href="#problem-definition">Problem Definition</a>
+      <a href="#methodology">Method</a>
+      <a href="#performance">Performance</a>
+    </nav>
+  </div>
+</div>
 <div class="container">
 <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
 <p class="subtitle">
@@ -312,70 +372,47 @@ Global drifter array overview illustrating the sparse distribution of ocean drif
 </section>
 
 
-<section class="section">
-<div class="section-tag">Problem</div>
-<h2>Ocean salinity imputation from sparse drifter trajectories</h2>
-
-<div class="problem-grid">
-
-<div class="problem-card">
-<h3>NSF Drifter Dataset</h3>
-<p>
-The NSF drifter dataset records sea surface salinity along drifting trajectories.
-Observations vary dynamically with ocean tides and currents.
+<section class="section" id="nsf-dataset">
+<div class="section-tag">NSF-Dataset</div>
+<h2>NSF drifter observations in the Fort Pierce coastal region</h2>
+<p class="lead">
+This section highlights the real NSF drifter dataset, showing the deployment location and the observed drifter trajectory with salinity values in the study area.
 </p>
-
-<ul>
-<li>Tidal effects influence drifter locations and salinity values</li>
-<li>Observations are sparse and irregular</li>
-<li>Continuous spatial salinity fields are unavailable</li>
-</ul>
-</div>
-
-<div class="problem-card">
-<h3>Problem Definition</h3>
-<p>
-We formulate sea surface salinity imputation under sparse drifter trajectories
-as a tensor completion problem.
-</p>
-
-<p>
-Given partially observed drifter trajectories with salinity and auxiliary variables,
-the objective is to reconstruct a complete spatial-temporal salinity field.
-</p>
-</div>
-
+<div class="single-figure">
+  <img src="pic/Picture10.png" alt="NSF dataset map">
 </div>
 </section>
 
+<section class="section" id="problem-definition">
+<div class="section-tag">Problem Definition</div>
+<h2>Sea surface salinity imputation as a tensor completion problem</h2>
+<p class="lead">
+We formulate sea surface salinity imputation under sparse drifter trajectories as a tensor completion problem over time, latitude, longitude, and sensor variables.
+</p>
+<div class="single-figure figure-light">
+  <img src="pic/Picture12.png" alt="Problem definition">
+</div>
+</section>
 
-<section class="section">
+<section class="section" id="methodology">
 <div class="section-tag">Method</div>
-<h2>Overview of the salinity imputation framework</h2>
-
-<div class="method-grid">
-
-<div class="method-card">
-<h3>Input</h3>
-<p>
-Sparse drifter trajectories containing partial salinity observations together with environmental variables.
+<h2>OASIS: Ocean salinity imputation framework</h2>
+<p class="lead">
+The proposed framework includes a training stage and an inference stage, connecting sparse drifter trajectories to reconstructed salinity predictions.
 </p>
+<div class="single-figure figure-light">
+  <img src="pic/Picture13.png" alt="Method framework">
 </div>
+</section>
 
-<div class="method-card">
-<h3>Model</h3>
-<p>
-A graph-aware learning framework models local hydrological relationships and large-scale ocean structures.
+<section class="section" id="performance">
+<div class="section-tag">Performance</div>
+<h2>Prediction examples on different trajectory segments</h2>
+<p class="lead">
+Example visualizations compare reconstructed salinity patterns across multiple coastal trajectory segments, highlighting the spatial consistency of predicted salinity values.
 </p>
-</div>
-
-<div class="method-card">
-<h3>Output</h3>
-<p>
-Reconstructed continuous sea surface salinity fields across space and time.
-</p>
-</div>
-
+<div class="single-figure figure-light">
+  <img src="pic/Picture14.png" alt="Performance visualization">
 </div>
 </section>
 
