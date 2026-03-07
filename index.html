@@ -3,166 +3,343 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="NSF project progress website with background, task 1, and current progress pages." />
-  <title>NSF Project Progress</title>
+  <meta name="description" content="Ocean Salinity Imputation using Sparse Drifter Trajectories" />
+  <title>Ocean Salinity Imputation using Sparse Drifter Trajectories</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
   <style>
     :root {
       --card-border: rgba(15, 23, 42, 0.08);
       --soft-bg: #f7f9fc;
-      --accent: #1d4ed8;
+      --accent: #0f4c81;
       --accent-2: #0f766e;
       --muted: #64748b;
+      --hero-text: #eaf4ff;
+      --hero-subtle: rgba(255, 255, 255, 0.82);
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+      background: linear-gradient(180deg, #f4f9ff 0%, #ffffff 100%);
+      color: #0f172a;
     }
-    nav[role="navigation"], nav.container-fluid {
+
+    nav.container-fluid {
       border-bottom: 1px solid rgba(15, 23, 42, 0.08);
       backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
-      background: rgba(255,255,255,0.92);
+      background: rgba(255, 255, 255, 0.92);
       z-index: 20;
     }
+
     main.container {
-      padding-top: 3rem;
+      padding-top: 2.5rem;
       padding-bottom: 3rem;
     }
-    .hero {
-      padding: 3rem 0 2rem;
+
+    .hidden-page {
+      display: none;
     }
-    .hero-card, .content-card, .placeholder-card, .timeline-card {
-      background: #fff;
+
+    .active-page {
+      display: block;
+    }
+
+    .poster {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 4.5rem 2rem 4rem;
+      text-align: center;
+      color: var(--hero-text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 28%),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.18), transparent 24%),
+        radial-gradient(circle at bottom center, rgba(96, 165, 250, 0.25), transparent 32%),
+        linear-gradient(135deg, #082f49 0%, #0f4c81 42%, #126e82 100%);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
+        repeating-linear-gradient(
+          -45deg,
+          rgba(255,255,255,0.02),
+          rgba(255,255,255,0.02) 8px,
+          rgba(255,255,255,0) 8px,
+          rgba(255,255,255,0) 18px
+        );
+      pointer-events: none;
+    }
+
+    .poster > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .poster-kicker {
+      display: inline-block;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      margin-bottom: 1.25rem;
+    }
+
+    .logo-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin: 0 auto 2rem auto;
+      max-width: 1100px;
+    }
+
+    .logo-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 18px;
+      padding: 0.9rem 1.2rem;
+      min-width: 150px;
+      min-height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 24px rgba(2, 8, 23, 0.14);
+    }
+
+    .logo-card img {
+      max-height: 58px;
+      max-width: 170px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .poster h1 {
+      font-size: clamp(2.1rem, 5vw, 4.3rem);
+      line-height: 1.08;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .poster .subtitle {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.08rem;
+      color: var(--hero-subtle);
+    }
+
+    .hero-actions {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-actions a {
+      text-decoration: none;
+    }
+
+    .hero-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      max-width: 1000px;
+      margin: 2.5rem auto 0 auto;
+      text-align: left;
+    }
+
+    .hero-info-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-info-card strong {
+      display: block;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+      font-size: 1rem;
+    }
+
+    .hero-info-card span {
+      color: rgba(255,255,255,0.84);
+      font-size: 0.94rem;
+    }
+
+    .content-wrap {
+      margin-top: 2rem;
+    }
+
+    .content-card,
+    .placeholder-card,
+    .timeline-card {
+      background: #ffffff;
       border: 1px solid var(--card-border);
-      border-radius: 20px;
+      border-radius: 22px;
       box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
     }
-    .hero-card {
-      padding: 2rem;
-    }
+
     .content-card {
       padding: 1.5rem;
       margin-bottom: 1.25rem;
     }
+
     .placeholder-card {
       padding: 1.5rem;
-      min-height: 280px;
+      min-height: 290px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       color: var(--muted);
-      background: repeating-linear-gradient(
-        -45deg,
-        #f8fafc,
-        #f8fafc 14px,
-        #eef2f7 14px,
-        #eef2f7 28px
-      );
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.9)),
+        repeating-linear-gradient(
+          -45deg,
+          #f8fafc,
+          #f8fafc 14px,
+          #eef2f7 14px,
+          #eef2f7 28px
+        );
     }
-    .badge {
-      display: inline-block;
-      padding: 0.35rem 0.75rem;
-      border-radius: 999px;
-      background: rgba(29, 78, 216, 0.1);
-      color: var(--accent);
-      font-size: 0.84rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
+
+    .timeline-card {
+      padding: 1.35rem;
+      margin-top: 1rem;
     }
+
+    .timeline-card ol {
+      margin-bottom: 0;
+    }
+
     .section-kicker {
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--accent-2);
       font-size: 0.78rem;
       font-weight: 700;
+      margin-bottom: 0.5rem;
     }
-    .subnav {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 1.25rem;
-    }
-    .subnav a {
-      text-decoration: none;
-    }
+
+    .panel-grid,
+    .quick-links,
     .metric-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1rem;
+    }
+
+    .metric-grid {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       margin-top: 1rem;
     }
+
+    .panel-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .quick-links {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 1.5rem;
+    }
+
+    .quick-links article,
+    .metric {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 1.15rem;
+    }
+
     .metric {
       background: var(--soft-bg);
-      border-radius: 16px;
-      padding: 1rem;
-      border: 1px solid rgba(15, 23, 42, 0.05);
     }
+
     .metric strong {
       display: block;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       color: #0f172a;
       margin-bottom: 0.35rem;
     }
-    .panel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-    .timeline-card {
-      padding: 1.5rem;
-      margin-top: 1rem;
-    }
-    .timeline-card ol {
-      margin-bottom: 0;
-    }
-    .quick-links {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .quick-links article {
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 1.25rem;
-      background: #fff;
-    }
-    .page-title {
-      margin-bottom: 1.5rem;
-    }
+
     .muted {
       color: var(--muted);
     }
-    .hidden-page {
-      display: none;
+
+    .page-title {
+      margin-bottom: 1.5rem;
     }
-    .active-page {
-      display: block;
+
+    .page-title h2 {
+      margin-bottom: 0.2rem;
     }
+
+    .back-link {
+      margin-top: 1rem;
+    }
+
     figure.placeholder-figure {
       margin: 0;
     }
+
     .placeholder-caption {
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
+      margin-top: 0.8rem;
+      font-size: 0.92rem;
       color: var(--muted);
       text-align: center;
     }
+
+    footer.container {
+      padding-bottom: 2rem;
+    }
+
     @media (max-width: 768px) {
-      .hero {
-        padding-top: 1rem;
+      .poster {
+        padding: 3rem 1.15rem;
       }
-      .hero-card {
-        padding: 1.5rem;
+
+      .logo-card {
+        min-width: 130px;
+        min-height: 82px;
+        padding: 0.7rem 0.9rem;
+      }
+
+      .logo-card img {
+        max-height: 48px;
+      }
+
+      .hero-info-grid {
+        margin-top: 2rem;
       }
     }
   </style>
 </head>
 <body>
   <nav class="container-fluid">
-    <ul><li><strong>NSF Project</strong></li></ul>
+    <ul>
+      <li><strong>NSF Project</strong></li>
+    </ul>
     <ul>
       <li><a href="#home" onclick="showPage('home')">Home</a></li>
       <li><a href="#task1" onclick="showPage('task1')">Task 1</a></li>
@@ -172,65 +349,83 @@
 
   <main class="container">
     <section id="home" class="active-page">
-      <div class="grid hero">
-        <section>
-          <div class="hero-card">
-            <span class="badge">Project Overview</span>
-            <hgroup>
-              <h2>Background</h2>
-              <h3>Foundational context and motivation for the NSF project</h3>
-            </hgroup>
-            <p>This homepage introduces the project background and summarizes the key motivation, research context, and importance of the work. It is designed as a clean landing page that routes visitors to the detailed Task 1 and Current Progress sections.</p>
-            <div class="metric-grid">
-              <div class="metric">
-                <strong>Background</strong>
-                <span>High-level motivation and research setting</span>
-              </div>
-              <div class="metric">
-                <strong>Task 1</strong>
-                <span>Dataset, problem definition, and methodology</span>
-              </div>
-              <div class="metric">
-                <strong>Progress</strong>
-                <span>Latest milestones and visual placeholders</span>
-              </div>
-            </div>
-            <div class="subnav">
-              <a href="#task1" role="button" onclick="showPage('task1')">Go to Task 1</a>
-              <a href="#progress" class="secondary" role="button" onclick="showPage('progress')">View Current Progress</a>
-            </div>
+      <section class="poster">
+        <div class="logo-bar">
+          <div class="logo-card">
+            <img src="pic/Picture1.png" alt="Griffith University logo">
           </div>
-        </section>
-      </div>
-
-      <div class="grid">
-        <section>
-          <article class="content-card">
-            <p class="section-kicker">Background Summary</p>
-            <h3>Research Motivation</h3>
-            <p>The project focuses on building a strong research foundation around the NSF-supported topic, clarifying why the problem matters and how this work contributes to a broader scientific and engineering agenda.</p>
-            <p>The homepage reflects the opening slides by presenting the overall background first, then guiding the audience toward the detailed technical task and current progress updates.</p>
-          </article>
-
-          <article class="content-card">
-            <p class="section-kicker">Context</p>
-            <h3>Why This Project Matters</h3>
-            <p>This page is intended to act as the entry point for presentations and project communication. It can be used as a lightweight web companion to your slides, making the project easier to browse and share.</p>
-          </article>
-
-          <div class="quick-links">
-            <article>
-              <h4>Task 1 Page</h4>
-              <p class="muted">Covers the NSF dataset, problem definition, and methodology.</p>
-              <a href="#task1" onclick="showPage('task1')">Open Task 1 →</a>
-            </article>
-            <article>
-              <h4>Current Progress</h4>
-              <p class="muted">Summarizes ongoing work and leaves room for figures and screenshots.</p>
-              <a href="#progress" onclick="showPage('progress')">Open Progress →</a>
-            </article>
+          <div class="logo-card">
+            <img src="pic/Picture2.png" alt="NSF logo">
           </div>
-        </section>
+          <div class="logo-card">
+            <img src="pic/Picture3.png" alt="Florida Atlantic University logo">
+          </div>
+          <div class="logo-card">
+            <img src="pic/Picture4.png" alt="CSIRO logo">
+          </div>
+        </div>
+
+        <span class="poster-kicker">Collaborative Research Project</span>
+
+        <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
+
+        <p class="subtitle">
+          A research project focused on leveraging sparse drifter trajectories for ocean salinity reconstruction,
+          with collaborative support across academic and research institutions.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#task1" role="button" onclick="showPage('task1')">Explore Task 1</a>
+          <a href="#progress" role="button" class="secondary" onclick="showPage('progress')">View Current Progress</a>
+        </div>
+
+        <div class="hero-info-grid">
+          <div class="hero-info-card">
+            <strong>Background</strong>
+            <span>Project motivation, scientific context, and research significance.</span>
+          </div>
+          <div class="hero-info-card">
+            <strong>Task 1</strong>
+            <span>NSF dataset, problem formulation, and methodology overview.</span>
+          </div>
+          <div class="hero-info-card">
+            <strong>Current Progress</strong>
+            <span>Milestones, visual placeholders, and recent development updates.</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="content-wrap">
+        <div class="grid">
+          <section>
+            <article class="content-card">
+              <p class="section-kicker">Background Summary</p>
+              <h3>Project Motivation</h3>
+              <p>
+                This project investigates ocean salinity imputation under sparse observational settings.
+                The homepage is designed as a poster-style landing page that highlights the core title,
+                collaborating organizations, and the entry points to technical details and progress updates.
+              </p>
+              <p>
+                It can serve as a lightweight project website, a companion page for presentations,
+                or a public-facing overview for collaborators and reviewers.
+              </p>
+            </article>
+
+            <div class="quick-links">
+              <article>
+                <h4>Task 1 Page</h4>
+                <p class="muted">Read about the NSF dataset, the core problem definition, and the proposed methodology.</p>
+                <a href="#task1" onclick="showPage('task1')">Open Task 1 →</a>
+              </article>
+              <article>
+                <h4>Current Progress</h4>
+                <p class="muted">Review the latest work and replace the reserved placeholders with figures or screenshots.</p>
+                <a href="#progress" onclick="showPage('progress')">Open Progress →</a>
+              </article>
+            </div>
+          </section>
+        </div>
       </div>
     </section>
 
@@ -245,37 +440,60 @@
           <article class="content-card">
             <p class="section-kicker">NSF Dataset</p>
             <h3>Dataset Overview</h3>
-            <p>This section introduces the NSF dataset used in Task 1, including the source, data characteristics, and the role it plays in the project workflow. You can replace this text with the exact dataset description from slides 4–6.</p>
-            <div class="panel-grid">
-              <div class="metric"><strong>Source</strong><span>Describe where the dataset comes from</span></div>
-              <div class="metric"><strong>Scale</strong><span>Add sample size, dimensions, or collection scope</span></div>
-              <div class="metric"><strong>Structure</strong><span>Summarize fields, labels, or modalities</span></div>
+            <p>
+              This section introduces the NSF dataset used in Task 1, including the data source,
+              key characteristics, and its role in model development and evaluation.
+            </p>
+            <div class="metric-grid">
+              <div class="metric">
+                <strong>Source</strong>
+                <span>Describe the origin of the dataset and how it was collected.</span>
+              </div>
+              <div class="metric">
+                <strong>Scale</strong>
+                <span>Add sample size, geographic scope, temporal span, or dimensionality.</span>
+              </div>
+              <div class="metric">
+                <strong>Structure</strong>
+                <span>Summarize variables, labels, trajectory fields, or data modalities.</span>
+              </div>
             </div>
           </article>
 
           <article class="content-card">
             <p class="section-kicker">Problem Definition</p>
             <h3>Research Question</h3>
-            <p>Define the main research problem, explain the target objective, and identify the practical or scientific challenge addressed by Task 1. This block is designed to mirror the problem-definition slides in a structured web format.</p>
-            <p>Include assumptions, constraints, and evaluation targets here to make the problem statement precise and easy to understand.</p>
+            <p>
+              Define the central scientific problem addressed in Task 1. Explain the prediction target,
+              the sparsity challenge, and why ocean salinity imputation is important for downstream research.
+            </p>
+            <p>
+              This section can also include constraints, assumptions, evaluation targets,
+              and the practical impact of solving the problem effectively.
+            </p>
           </article>
 
           <article class="content-card">
             <p class="section-kicker">Methodology</p>
             <h3>Approach and Workflow</h3>
-            <p>Use this section to describe your methodology: preprocessing, model or algorithm design, experimental setup, and expected outputs. The layout is intentionally modular so you can later expand it with diagrams or equations.</p>
+            <p>
+              Use this section to describe your methodology, including preprocessing,
+              representation of sparse drifter trajectories, model development, and experimental design.
+            </p>
             <div class="timeline-card">
               <h4>Suggested Workflow</h4>
               <ol>
                 <li>Prepare and clean the NSF dataset.</li>
-                <li>Define the prediction or analysis objective.</li>
-                <li>Develop and test the proposed method.</li>
-                <li>Evaluate outcomes and iterate on the design.</li>
+                <li>Define the imputation objective and evaluation setup.</li>
+                <li>Develop the proposed model or analytical pipeline.</li>
+                <li>Validate performance and refine the method iteratively.</li>
               </ol>
             </div>
           </article>
 
-          <p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
+          <p class="back-link">
+            <a href="#home" onclick="showPage('home')">← Back to Home</a>
+          </p>
         </section>
       </div>
     </section>
@@ -285,13 +503,17 @@
         <section>
           <hgroup class="page-title">
             <h2>Current Progress</h2>
-            <h3>Slides 8–9 with reserved space for visuals</h3>
+            <h3>Slides 8–9 with reserved visual areas</h3>
           </hgroup>
 
           <article class="content-card">
             <p class="section-kicker">Progress Snapshot</p>
             <h3>Ongoing Work</h3>
-            <p>This page summarizes your recent progress, interim findings, and next-step planning. The content area below includes large placeholders so you can insert figures, charts, screenshots, or experimental results later.</p>
+            <p>
+              This page summarizes recent progress, interim findings, and upcoming work.
+              The visual blocks below are intentionally left as placeholders so you can replace them
+              with figures, charts, system diagrams, or experimental screenshots.
+            </p>
           </article>
 
           <div class="panel-grid">
@@ -299,7 +521,7 @@
               <div class="placeholder-card">
                 <div>
                   <h4>Image Placeholder 1</h4>
-                  <p>Insert progress chart, system diagram, or qualitative result here.</p>
+                  <p>Insert a progress chart, system diagram, or result visualization here.</p>
                 </div>
               </div>
               <figcaption class="placeholder-caption">Reserved visual area for slide 8 content</figcaption>
@@ -309,7 +531,7 @@
               <div class="placeholder-card">
                 <div>
                   <h4>Image Placeholder 2</h4>
-                  <p>Insert comparison figure, sample output, or experiment screenshot here.</p>
+                  <p>Insert a comparison figure, model output, or experiment screenshot here.</p>
                 </div>
               </div>
               <figcaption class="placeholder-caption">Reserved visual area for slide 9 content</figcaption>
@@ -319,10 +541,15 @@
           <article class="content-card">
             <p class="section-kicker">Next Steps</p>
             <h3>Planned Updates</h3>
-            <p>Add bullet-style milestones, current blockers, validation results, or planned experiments in this section. It is meant to support concise reporting while keeping room for visual evidence.</p>
+            <p>
+              Add milestones, current blockers, model validation notes, or planned experiments here.
+              This section is suitable for concise reporting while leaving enough room for visual evidence.
+            </p>
           </article>
 
-          <p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
+          <p class="back-link">
+            <a href="#home" onclick="showPage('home')">← Back to Home</a>
+          </p>
         </section>
       </div>
     </section>
@@ -345,26 +572,30 @@
   </section>
 
   <footer class="container">
-    <small><a href="#home" onclick="showPage('home')">Home</a> • <a href="#task1" onclick="showPage('task1')">Task 1</a></small>
+    <small>
+      <a href="#home" onclick="showPage('home')">Home</a> •
+      <a href="#task1" onclick="showPage('task1')">Task 1</a>
+    </small>
   </footer>
 
   <script>
     function showPage(pageId) {
-      const pages = ['home', 'task1', 'progress'];
-      pages.forEach(id => {
+      const pages = ["home", "task1", "progress"];
+      pages.forEach((id) => {
         const el = document.getElementById(id);
-        el.classList.remove('active-page');
-        el.classList.add('hidden-page');
+        el.classList.remove("active-page");
+        el.classList.add("hidden-page");
       });
+
       const active = document.getElementById(pageId);
-      active.classList.remove('hidden-page');
-      active.classList.add('active-page');
+      active.classList.remove("hidden-page");
+      active.classList.add("active-page");
       window.location.hash = pageId;
     }
 
-    window.addEventListener('load', () => {
-      const hash = window.location.hash.replace('#', '');
-      if (['home', 'task1', 'progress'].includes(hash)) {
+    window.addEventListener("load", () => {
+      const hash = window.location.hash.replace("#", "");
+      if (["home", "task1", "progress"].includes(hash)) {
         showPage(hash);
       }
     });
