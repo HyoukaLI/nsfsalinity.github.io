@@ -161,39 +161,12 @@
       margin-bottom:1.3rem;
     }
 
-    .panel-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:1.2rem;
-      margin-top:1.3rem;
+    .page-title{
+      margin-bottom:1rem;
     }
 
-    .placeholder-card{
-      min-height:240px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:1.5rem;
-      color:var(--muted);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.92)),
-        repeating-linear-gradient(
-          -45deg,
-          #f8fafc,
-          #f8fafc 14px,
-          #eef2f7 14px,
-          #eef2f7 28px
-        );
-      border:2px dashed #94a3b8;
-      border-radius:18px;
-    }
-
-    .placeholder-caption{
-      text-align:center;
-      color:var(--muted);
-      margin-top:.55rem;
-      font-size:.92rem;
+    .page-title h2{
+      margin-bottom:.15rem;
     }
 
     .slide-block{
@@ -285,12 +258,12 @@
 
     .slide-right img.top-image,
     .slide-right .top-image{
-      aspect-ratio: 16 / 9;
+      aspect-ratio:16 / 9;
     }
 
     .slide-right img.bottom-image,
     .slide-right .bottom-image{
-      aspect-ratio: 4 / 3;
+      aspect-ratio:4 / 3;
     }
 
     .img-placeholder{
@@ -311,24 +284,12 @@
         );
     }
 
-    .page-title{
-      margin-bottom:1rem;
-    }
-
-    .page-title h2{
-      margin-bottom:.15rem;
-    }
-
     footer.container{
       padding-bottom:2rem;
     }
 
     @media (max-width: 960px){
-      .slide-section{
-        grid-template-columns:1fr;
-      }
-
-      .panel-grid,
+      .slide-section,
       .hero-summary{
         grid-template-columns:1fr;
       }
@@ -427,40 +388,7 @@
           The website is designed as a research-style landing page that summarizes the background,
           technical task, and current progress in a clean presentation format.
         </p>
-        <p>
-          The two image areas below are reserved for inserting an overview figure, workflow diagram,
-          or any other visual that supports the homepage.
-        </p>
       </div>
-
-      <div class="panel-grid">
-        <figure>
-          <div class="placeholder-card">
-            <div>
-              <h4>Image Placeholder 1</h4>
-              <p>Insert workflow diagram or system overview here</p>
-            </div>
-          </div>
-          <figcaption class="placeholder-caption">Reserved image area</figcaption>
-        </figure>
-
-        <figure>
-          <div class="placeholder-card">
-            <div>
-              <h4>Image Placeholder 2</h4>
-              <p>Insert experiment result or dataset visualization here</p>
-            </div>
-          </div>
-          <figcaption class="placeholder-caption">Reserved image area</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section id="task1" class="hidden-page">
-      <hgroup class="page-title">
-        <h2>Task 1</h2>
-        <h3>Background, NSF dataset, problem definition, and methodology</h3>
-      </hgroup>
 
       <div class="slide-block">
         <div class="slide-header">
@@ -524,7 +452,7 @@
                 <strong>Advantages</strong>
                 <ul>
                   <li><strong>Direct observation:</strong> Drifters equipped with hydrological sensors can be used to measure salinity along the drifter track.</li>
-                  <li><strong>Suitable for complex nearshore environments:</strong> Salinity in offshore and coastal areas fluctuates dramatically. In these regions, satellite salinity data suffers from low resolution and high noise, whereas drifters can capture finer-grained dynamic variations.</li>
+                  <li><strong>Suitable for complex nearshore environments:</strong> Salinity in offshore/costal areas fluctuates dramatically. In these regions, satellite salinity data suffers from low resolution and high noise, whereas drifters can capture finer-grained dynamic variations.</li>
                 </ul>
               </li>
               <li>
@@ -554,6 +482,13 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section id="task1" class="hidden-page">
+      <hgroup class="page-title">
+        <h2>Task 1</h2>
+        <h3>NSF dataset, problem definition, and methodology</h3>
+      </hgroup>
 
       <div class="content-card">
         <h3>NSF Dataset</h3>
@@ -590,29 +525,41 @@
         <h3>Slides 8–9 with reserved visual areas</h3>
       </hgroup>
 
-      <div class="panel-grid">
-        <figure>
-          <div class="placeholder-card">
-            <div>
-              <h4>Result Figure</h4>
-              <p>Insert experimental results here</p>
-            </div>
+      <div class="slide-block">
+        <div class="slide-section">
+          <div class="slide-left">
+            <h3>Ongoing Work</h3>
+            <p>
+              This page summarizes recent progress, interim findings, and upcoming work.
+              Use the image areas on the right to insert results, model outputs, screenshots,
+              comparison figures, or evaluation plots.
+            </p>
+            <ul>
+              <li>Track current experiments and intermediate results.</li>
+              <li>Summarize completed milestones and pending tasks.</li>
+              <li>Document next-step plans for model improvement and validation.</li>
+            </ul>
           </div>
-          <figcaption class="placeholder-caption">Reserved visual area for slide 8</figcaption>
-        </figure>
 
-        <figure>
-          <div class="placeholder-card">
-            <div>
-              <h4>Visualization</h4>
-              <p>Insert prediction visualization here</p>
+          <div class="slide-right">
+            <div class="img-placeholder top-image">
+              <div>
+                <h5>Result Figure Placeholder</h5>
+                <p>Insert experimental results here</p>
+              </div>
+            </div>
+
+            <div class="img-placeholder bottom-image">
+              <div>
+                <h5>Visualization Placeholder</h5>
+                <p>Insert prediction visualization here</p>
+              </div>
             </div>
           </div>
-          <figcaption class="placeholder-caption">Reserved visual area for slide 9</figcaption>
-        </figure>
+        </div>
       </div>
 
-      <div class="content-card" style="margin-top:1.3rem;">
+      <div class="content-card">
         <h3>Next Steps</h3>
         <ul>
           <li>Improve model accuracy under sparse observation settings.</li>
