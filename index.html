@@ -648,73 +648,92 @@
     </section>
 
     <section id="progress" class="hidden-page">
-      <hgroup class="page-title">
-        <h2>Current Progress</h2>
-        <h3>Slides 8–9 with reserved visual areas</h3>
-      </hgroup>
+  <hgroup class="page-title">
+    <h2>Current Progress</h2>
+    <h3>Method overview and visualization-based experimental results</h3>
+  </hgroup>
 
-      <div class="slide-block">
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Ongoing Work</h3>
-            <p>
-              This page summarizes recent progress, interim findings, and upcoming work.
-              Use the image areas on the right to insert results, model outputs, screenshots,
-              comparison figures, or evaluation plots.
-            </p>
-            <ul>
-              <li>Track current experiments and intermediate results.</li>
-              <li>Summarize completed milestones and pending tasks.</li>
-              <li>Document next-step plans for model improvement and validation.</li>
-            </ul>
-          </div>
+  <div class="slide-block">
+    <div class="slide-header">
+      <div class="slide-bar"></div>
+      <h2 class="slide-title">Method Overview</h2>
+    </div>
 
-          <div class="slide-right">
-            <div class="img-placeholder top-image">
-              <div>
-                <h5>Result Figure Placeholder</h5>
-                <p>Insert experimental results here</p>
-              </div>
-            </div>
+    <div class="slide-section">
+      <div class="slide-left">
+        <h3>GridGNN for Ocean Salinity Imputation</h3>
+        <p>
+          Our current progress focuses on <strong>GridGNN</strong>, a trajectory-aware graph learning
+          framework designed for ocean salinity imputation from sparse drifter observations.
+          The method first maps irregular drifter measurements onto a regular spatial grid,
+          then constructs local graphs within each grid cell and a global graph across cells.
+        </p>
+        <ul>
+          <li><strong>Grid Construction:</strong> Irregular drifter observations are discretized into latitude–longitude grid cells to provide a consistent spatial framework.</li>
+          <li><strong>Trajectory-Aware Graph Construction:</strong> The model combines trajectory edges and spatial KNN edges, so it can capture both along-track continuity and local spatial similarity.</li>
+          <li><strong>Local Message Passing:</strong> Two graph streams process trajectory relations and spatial neighborhood relations separately.</li>
+          <li><strong>Multi-Graph Fusion:</strong> The two streams are fused into a unified local representation.</li>
+          <li><strong>Global Propagation:</strong> Information is propagated across adjacent grid cells to recover larger-scale structures.</li>
+          <li><strong>Prediction Head:</strong> Final node embeddings are mapped to salinity predictions for imputation.</li>
+        </ul>
+        <p>
+          This design allows the framework to model both fine-scale local variability
+          and large-scale spatial coherence, which is especially important under sparse,
+          irregular, and heterogeneous drifter sampling.
+        </p>
+      </div>
 
-            <div class="img-placeholder bottom-image">
-              <div>
-                <h5>Visualization Placeholder</h5>
-                <p>Insert prediction visualization here</p>
-              </div>
-            </div>
+      <div class="slide-right">
+        <div class="img-placeholder top-image">
+          <div>
+            <h5>Method Figure Placeholder</h5>
+            <p>Insert GridGNN pipeline / framework diagram here</p>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="content-card">
-        <h3>Next Steps</h3>
+  <div class="slide-block">
+    <div class="slide-header">
+      <div class="slide-bar"></div>
+      <h2 class="slide-title">Experimental Results</h2>
+    </div>
+
+    <div class="slide-section">
+      <div class="slide-left">
+        <h3>Visualization-Based Findings</h3>
+        <p>
+          To qualitatively evaluate reconstruction quality, the paper visualizes predicted
+          salinity distributions across nine geographically diverse regions. These regions
+          cover multiple oceanographic regimes, including coastal shelves, equatorial oceans,
+          transport-dominated regions, and high-latitude Arctic environments.
+        </p>
         <ul>
-          <li>Improve model accuracy under sparse observation settings.</li>
-          <li>Expand the dataset coverage and benchmark experiments.</li>
-          <li>Evaluate reconstruction quality across different ocean regions.</li>
+          <li><strong>Coastal and Equatorial Regions:</strong> The model captures localized salinity transitions and mesoscale structures without excessive smoothing.</li>
+          <li><strong>Transport-Dominated Regions:</strong> Reconstructed fields preserve coherent zonal gradients and along-trajectory advective consistency.</li>
+          <li><strong>Sparsely Sampled Regions:</strong> Even under fragmented trajectories and low neighborhood density, the model still produces spatially consistent and physically plausible reconstructions.</li>
+          <li><strong>Overall Observation:</strong> The visual agreement between observations and predictions shows that the model preserves both large-scale spatial structure and fine-scale variability.</li>
         </ul>
+        <p>
+          These visualization results suggest that the model achieves not only low numerical error,
+          but also strong spatial realism across very different marine environments.
+        </p>
       </div>
 
-      <p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
-    </section>
-  </main>
-
-  <section aria-label="Subscribe example">
-    <div class="container">
-      <article>
-        <hgroup>
-          <h2>Stay Updated</h2>
-          <h3>Leave your contact information for future project updates</h3>
-        </hgroup>
-        <form class="grid">
-          <input type="text" id="firstname" name="firstname" placeholder="Your name" aria-label="Your name" required />
-          <input type="email" id="email" name="email" placeholder="Your email" aria-label="Your email" required />
-          <button type="submit" onclick="event.preventDefault()">Subscribe</button>
-        </form>
-      </article>
+      <div class="slide-right">
+        <div class="img-placeholder top-image">
+          <div>
+            <h5>Visualization Placeholder</h5>
+            <p>Insert regional qualitative comparison / salinity visualization here</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+
+  <p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
+</section>
 
   <footer class="container">
     <small>
