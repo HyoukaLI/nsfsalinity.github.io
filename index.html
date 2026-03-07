@@ -1,608 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Ocean Salinity Imputation using Sparse Drifter Trajectories" />
-  <title>Ocean Salinity Imputation using Sparse Drifter Trajectories</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-  <style>
-    :root {
-      --card-border: rgba(15, 23, 42, 0.08);
-      --soft-bg: #f7f9fc;
-      --accent: #0f4c81;
-      --accent-2: #0f766e;
-      --muted: #64748b;
-      --hero-text: #eaf4ff;
-      --hero-subtle: rgba(255, 255, 255, 0.82);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ocean Salinity Imputation</title>
 
-    * {
-      box-sizing: border-box;
-    }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
 
-    html {
-      scroll-behavior: smooth;
-    }
+<style>
 
-    body {
-      background: linear-gradient(180deg, #f4f9ff 0%, #ffffff 100%);
-      color: #0f172a;
-    }
+body{
+background:linear-gradient(180deg,#f4f9ff 0%,#ffffff 100%);
+}
 
-    nav.container-fluid {
-      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.92);
-      z-index: 20;
-    }
+.hidden-page{display:none;}
+.active-page{display:block;}
 
-    main.container {
-      padding-top: 2.5rem;
-      padding-bottom: 3rem;
-    }
+.poster{
+background:linear-gradient(135deg,#0f4c81,#126e82);
+border-radius:25px;
+padding:80px 40px;
+color:white;
+text-align:center;
+margin-bottom:40px;
+}
 
-    .hidden-page {
-      display: none;
-    }
+.poster h1{
+font-size:3.5rem;
+margin-top:20px;
+}
 
-    .active-page {
-      display: block;
-    }
+.subtitle{
+opacity:0.9;
+max-width:800px;
+margin:auto;
+}
 
-    .poster {
-      position: relative;
-      overflow: hidden;
-      border-radius: 28px;
-      padding: 4.5rem 2rem 4rem;
-      text-align: center;
-      color: var(--hero-text);
-      background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 28%),
-        radial-gradient(circle at top right, rgba(34, 197, 94, 0.18), transparent 24%),
-        radial-gradient(circle at bottom center, rgba(96, 165, 250, 0.25), transparent 32%),
-        linear-gradient(135deg, #082f49 0%, #0f4c81 42%, #126e82 100%);
-      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
+.logo-bar{
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+margin-bottom:30px;
+}
 
-    .poster::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
-        repeating-linear-gradient(
-          -45deg,
-          rgba(255,255,255,0.02),
-          rgba(255,255,255,0.02) 8px,
-          rgba(255,255,255,0) 8px,
-          rgba(255,255,255,0) 18px
-        );
-      pointer-events: none;
-    }
+.logo-bar img{
+height:60px;
+background:white;
+padding:10px;
+border-radius:10px;
+}
 
-    .poster > * {
-      position: relative;
-      z-index: 1;
-    }
+.hero-actions{
+margin-top:30px;
+}
 
-    .poster-kicker {
-      display: inline-block;
-      padding: 0.45rem 0.9rem;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-      margin-bottom: 1.25rem;
-    }
+.panel-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+margin-top:40px;
+}
 
-    .logo-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin: 0 auto 2rem auto;
-      max-width: 1100px;
-    }
+.placeholder-card{
+min-height:240px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+background:
+repeating-linear-gradient(
+-45deg,
+#f8fafc,
+#f8fafc 14px,
+#eef2f7 14px,
+#eef2f7 28px
+);
+border:2px dashed #94a3b8;
+border-radius:15px;
+}
 
-    .logo-card {
-      background: rgba(255, 255, 255, 0.96);
-      border-radius: 18px;
-      padding: 0.9rem 1.2rem;
-      min-width: 150px;
-      min-height: 96px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 12px 24px rgba(2, 8, 23, 0.14);
-    }
+.placeholder-caption{
+text-align:center;
+color:#64748b;
+margin-top:8px;
+}
 
-    .logo-card img {
-      max-height: 58px;
-      max-width: 170px;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      display: block;
-    }
+.content-card{
+background:white;
+padding:25px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+margin-bottom:20px;
+}
 
-    .poster h1 {
-      font-size: clamp(2.1rem, 5vw, 4.3rem);
-      line-height: 1.08;
-      margin-bottom: 1rem;
-      color: #ffffff;
-    }
-
-    .poster .subtitle {
-      max-width: 900px;
-      margin: 0 auto;
-      font-size: 1.08rem;
-      color: var(--hero-subtle);
-    }
-
-    .hero-actions {
-      margin-top: 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 0.9rem;
-      flex-wrap: wrap;
-    }
-
-    .hero-actions a {
-      text-decoration: none;
-    }
-
-    .hero-info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1rem;
-      max-width: 1000px;
-      margin: 2.5rem auto 0 auto;
-      text-align: left;
-    }
-
-    .hero-info-card {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 18px;
-      padding: 1rem 1.1rem;
-      backdrop-filter: blur(6px);
-    }
-
-    .hero-info-card strong {
-      display: block;
-      color: #ffffff;
-      margin-bottom: 0.35rem;
-      font-size: 1rem;
-    }
-
-    .hero-info-card span {
-      color: rgba(255,255,255,0.84);
-      font-size: 0.94rem;
-    }
-
-    .content-wrap {
-      margin-top: 2rem;
-    }
-
-    .content-card,
-    .placeholder-card,
-    .timeline-card {
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
-    }
-
-    .content-card {
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .placeholder-card {
-      padding: 1.5rem;
-      min-height: 290px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: var(--muted);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.9)),
-        repeating-linear-gradient(
-          -45deg,
-          #f8fafc,
-          #f8fafc 14px,
-          #eef2f7 14px,
-          #eef2f7 28px
-        );
-    }
-
-    .timeline-card {
-      padding: 1.35rem;
-      margin-top: 1rem;
-    }
-
-    .timeline-card ol {
-      margin-bottom: 0;
-    }
-
-    .section-kicker {
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent-2);
-      font-size: 0.78rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .panel-grid,
-    .quick-links,
-    .metric-grid {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .metric-grid {
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      margin-top: 1rem;
-    }
-
-    .panel-grid {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-
-    .quick-links {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      margin-top: 1.5rem;
-    }
-
-    .quick-links article,
-    .metric {
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 1.15rem;
-    }
-
-    .metric {
-      background: var(--soft-bg);
-    }
-
-    .metric strong {
-      display: block;
-      font-size: 1.05rem;
-      color: #0f172a;
-      margin-bottom: 0.35rem;
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .page-title {
-      margin-bottom: 1.5rem;
-    }
-
-    .page-title h2 {
-      margin-bottom: 0.2rem;
-    }
-
-    .back-link {
-      margin-top: 1rem;
-    }
-
-    figure.placeholder-figure {
-      margin: 0;
-    }
-
-    .placeholder-caption {
-      margin-top: 0.8rem;
-      font-size: 0.92rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    footer.container {
-      padding-bottom: 2rem;
-    }
-
-    @media (max-width: 768px) {
-      .poster {
-        padding: 3rem 1.15rem;
-      }
-
-      .logo-card {
-        min-width: 130px;
-        min-height: 82px;
-        padding: 0.7rem 0.9rem;
-      }
-
-      .logo-card img {
-        max-height: 48px;
-      }
-
-      .hero-info-grid {
-        margin-top: 2rem;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <nav class="container-fluid">
-    <ul>
-      <li><strong>NSF Project</strong></li>
-    </ul>
-    <ul>
-      <li><a href="#home" onclick="showPage('home')">Home</a></li>
-      <li><a href="#task1" onclick="showPage('task1')">Task 1</a></li>
-      <li><a href="#progress" role="button" onclick="showPage('progress')">Current Progress</a></li>
-    </ul>
-  </nav>
 
-  <main class="container">
-    <section id="home" class="active-page">
-      <section class="poster">
-        <div class="logo-bar">
-          <div class="logo-card">
-            <img src="pic/Picture1.png" alt="Griffith University logo">
-          </div>
-          <div class="logo-card">
-            <img src="pic/Picture2.png" alt="NSF logo">
-          </div>
-          <div class="logo-card">
-            <img src="pic/Picture3.png" alt="Florida Atlantic University logo">
-          </div>
-          <div class="logo-card">
-            <img src="pic/Picture4.png" alt="CSIRO logo">
-          </div>
-        </div>
+<nav class="container-fluid">
+<ul><li><strong>NSF Project</strong></li></ul>
+<ul>
+<li><a href="#home" onclick="showPage('home')">Home</a></li>
+<li><a href="#task1" onclick="showPage('task1')">Task1</a></li>
+<li><a href="#progress" role="button" onclick="showPage('progress')">Progress</a></li>
+</ul>
+</nav>
 
-        <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
 
-        <p class="subtitle">
-          A research project focused on leveraging sparse drifter trajectories for ocean salinity reconstruction,
-          with collaborative support across academic and research institutions.
-        </p>
+<main class="container">
 
-        <div class="hero-actions">
-          <a href="#task1" role="button" onclick="showPage('task1')">Explore Task 1</a>
-          <a href="#progress" role="button" class="secondary" onclick="showPage('progress')">View Current Progress</a>
-        </div>
+<!-- HOME PAGE -->
 
-        <div class="hero-info-grid">
-          <div class="hero-info-card">
-            <strong>Background</strong>
-            <span>Project motivation, scientific context, and research significance.</span>
-          </div>
-          <div class="hero-info-card">
-            <strong>Task 1</strong>
-            <span>NSF dataset, problem formulation, and methodology overview.</span>
-          </div>
-          <div class="hero-info-card">
-            <strong>Current Progress</strong>
-            <span>Milestones, visual placeholders, and recent development updates.</span>
-          </div>
-        </div>
-      </section>
+<section id="home" class="active-page">
 
-      <div class="content-wrap">
-        <div class="grid">
-          <section>
-            <article class="content-card">
-              <p class="section-kicker">Background Summary</p>
-              <h3>Project Motivation</h3>
-              <p>
-                This project investigates ocean salinity imputation under sparse observational settings.
-                The homepage is designed as a poster-style landing page that highlights the core title,
-                collaborating organizations, and the entry points to technical details and progress updates.
-              </p>
-              <p>
-                It can serve as a lightweight project website, a companion page for presentations,
-                or a public-facing overview for collaborators and reviewers.
-              </p>
-            </article>
+<div class="poster">
 
-<div class="panel-grid" style="margin-top: 1.5rem;">
-  <figure class="placeholder-figure">
-    <div class="placeholder-card">
-      <div>
-        <h4>Image Placeholder 1</h4>
-        <p>Insert an overview figure, workflow diagram, or poster-related image here.</p>
-      </div>
-    </div>
-    <figcaption class="placeholder-caption">Reserved image area</figcaption>
-  </figure>
-
-  <figure class="placeholder-figure">
-    <div class="placeholder-card">
-      <div>
-        <h4>Image Placeholder 2</h4>
-        <p>Insert another figure, project illustration, or institutional graphic here.</p>
-      </div>
-    </div>
-    <figcaption class="placeholder-caption">Reserved image area</figcaption>
-  </figure>
+<div class="logo-bar">
+<img src="pic/Picture1.png">
+<img src="pic/Picture2.png">
+<img src="pic/Picture3.png">
+<img src="pic/Picture4.png">
 </div>
-    </section>
 
-    <section id="task1" class="hidden-page">
-      <div class="grid">
-        <section>
-          <hgroup class="page-title">
-            <h2>Task 1</h2>
-            <h3>NSF dataset, problem definition, and methodology</h3>
-          </hgroup>
+<h1>Ocean Salinity Imputation<br>using Sparse Drifter Trajectories</h1>
 
-          <article class="content-card">
-            <p class="section-kicker">NSF Dataset</p>
-            <h3>Dataset Overview</h3>
-            <p>
-              This section introduces the NSF dataset used in Task 1, including the data source,
-              key characteristics, and its role in model development and evaluation.
-            </p>
-            <div class="metric-grid">
-              <div class="metric">
-                <strong>Source</strong>
-                <span>Describe the origin of the dataset and how it was collected.</span>
-              </div>
-              <div class="metric">
-                <strong>Scale</strong>
-                <span>Add sample size, geographic scope, temporal span, or dimensionality.</span>
-              </div>
-              <div class="metric">
-                <strong>Structure</strong>
-                <span>Summarize variables, labels, trajectory fields, or data modalities.</span>
-              </div>
-            </div>
-          </article>
+<p class="subtitle">
+A research project focused on leveraging sparse drifter trajectories for ocean salinity reconstruction.
+</p>
 
-          <article class="content-card">
-            <p class="section-kicker">Problem Definition</p>
-            <h3>Research Question</h3>
-            <p>
-              Define the central scientific problem addressed in Task 1. Explain the prediction target,
-              the sparsity challenge, and why ocean salinity imputation is important for downstream research.
-            </p>
-            <p>
-              This section can also include constraints, assumptions, evaluation targets,
-              and the practical impact of solving the problem effectively.
-            </p>
-          </article>
+<div class="hero-actions">
+<a href="#task1" role="button" onclick="showPage('task1')">Explore Task 1</a>
+<a href="#progress" role="button" class="secondary" onclick="showPage('progress')">View Progress</a>
+</div>
 
-          <article class="content-card">
-            <p class="section-kicker">Methodology</p>
-            <h3>Approach and Workflow</h3>
-            <p>
-              Use this section to describe your methodology, including preprocessing,
-              representation of sparse drifter trajectories, model development, and experimental design.
-            </p>
-            <div class="timeline-card">
-              <h4>Suggested Workflow</h4>
-              <ol>
-                <li>Prepare and clean the NSF dataset.</li>
-                <li>Define the imputation objective and evaluation setup.</li>
-                <li>Develop the proposed model or analytical pipeline.</li>
-                <li>Validate performance and refine the method iteratively.</li>
-              </ol>
-            </div>
-          </article>
+</div>
 
-          <p class="back-link">
-            <a href="#home" onclick="showPage('home')">← Back to Home</a>
-          </p>
-        </section>
-      </div>
-    </section>
+<div class="content-card">
+<h3>Project Motivation</h3>
 
-    <section id="progress" class="hidden-page">
-      <div class="grid">
-        <section>
-          <hgroup class="page-title">
-            <h2>Current Progress</h2>
-            <h3>Slides 8–9 with reserved visual areas</h3>
-          </hgroup>
+<p>
+This project investigates ocean salinity imputation under sparse observational settings.
+The goal is to reconstruct salinity fields using sparse drifting buoy trajectories.
+</p>
 
-          <article class="content-card">
-            <p class="section-kicker">Progress Snapshot</p>
-            <h3>Ongoing Work</h3>
-            <p>
-              This page summarizes recent progress, interim findings, and upcoming work.
-              The visual blocks below are intentionally left as placeholders so you can replace them
-              with figures, charts, system diagrams, or experimental screenshots.
-            </p>
-          </article>
+<p>
+The webpage serves as a lightweight research project page for presenting background,
+methodology, and ongoing progress.
+</p>
+</div>
 
-          <div class="panel-grid">
-            <figure class="placeholder-figure">
-              <div class="placeholder-card">
-                <div>
-                  <h4>Image Placeholder 1</h4>
-                  <p>Insert a progress chart, system diagram, or result visualization here.</p>
-                </div>
-              </div>
-              <figcaption class="placeholder-caption">Reserved visual area for slide 8 content</figcaption>
-            </figure>
 
-            <figure class="placeholder-figure">
-              <div class="placeholder-card">
-                <div>
-                  <h4>Image Placeholder 2</h4>
-                  <p>Insert a comparison figure, model output, or experiment screenshot here.</p>
-                </div>
-              </div>
-              <figcaption class="placeholder-caption">Reserved visual area for slide 9 content</figcaption>
-            </figure>
-          </div>
+<!-- IMAGE PLACEHOLDERS -->
 
-          <article class="content-card">
-            <p class="section-kicker">Next Steps</p>
-            <h3>Planned Updates</h3>
-            <p>
-              Add milestones, current blockers, model validation notes, or planned experiments here.
-              This section is suitable for concise reporting while leaving enough room for visual evidence.
-            </p>
-          </article>
+<div class="panel-grid">
 
-          <p class="back-link">
-            <a href="#home" onclick="showPage('home')">← Back to Home</a>
-          </p>
-        </section>
-      </div>
-    </section>
-  </main>
+<figure>
+<div class="placeholder-card">
+<div>
+<h4>Image Placeholder 1</h4>
+<p>Insert workflow diagram or system overview here</p>
+</div>
+</div>
+<figcaption class="placeholder-caption">Reserved image area</figcaption>
+</figure>
 
-  <section aria-label="Subscribe example">
-    <div class="container">
-      <article>
-        <hgroup>
-          <h2>Stay Updated</h2>
-          <h3>Leave your contact information for future project updates</h3>
-        </hgroup>
-        <form class="grid">
-          <input type="text" id="firstname" name="firstname" placeholder="Your name" aria-label="Your name" required />
-          <input type="email" id="email" name="email" placeholder="Your email" aria-label="Your email" required />
-          <button type="submit" onclick="event.preventDefault()">Subscribe</button>
-        </form>
-      </article>
-    </div>
-  </section>
+<figure>
+<div class="placeholder-card">
+<div>
+<h4>Image Placeholder 2</h4>
+<p>Insert experiment result or dataset visualization</p>
+</div>
+</div>
+<figcaption class="placeholder-caption">Reserved image area</figcaption>
+</figure>
 
-  <footer class="container">
-    <small>
-      <a href="#home" onclick="showPage('home')">Home</a> •
-      <a href="#task1" onclick="showPage('task1')">Task 1</a>
-    </small>
-  </footer>
+</div>
 
-  <script>
-    function showPage(pageId) {
-      const pages = ["home", "task1", "progress"];
-      pages.forEach((id) => {
-        const el = document.getElementById(id);
-        el.classList.remove("active-page");
-        el.classList.add("hidden-page");
-      });
+</section>
 
-      const active = document.getElementById(pageId);
-      active.classList.remove("hidden-page");
-      active.classList.add("active-page");
-      window.location.hash = pageId;
-    }
 
-    window.addEventListener("load", () => {
-      const hash = window.location.hash.replace("#", "");
-      if (["home", "task1", "progress"].includes(hash)) {
-        showPage(hash);
-      }
-    });
-  </script>
+
+<!-- TASK1 PAGE -->
+
+<section id="task1" class="hidden-page">
+
+<h2>Task 1</h2>
+<h4>NSF Dataset · Problem Definition · Methodology</h4>
+
+<div class="content-card">
+<h3>NSF Dataset</h3>
+
+<p>
+Describe the dataset used in this project, including its origin,
+spatial coverage, temporal resolution, and key features.
+</p>
+
+</div>
+
+<div class="content-card">
+<h3>Problem Definition</h3>
+
+<p>
+Define the main problem addressed in this research:
+reconstructing ocean salinity fields using sparse drifter observations.
+</p>
+
+</div>
+
+<div class="content-card">
+<h3>Methodology</h3>
+
+<ol>
+<li>Dataset preprocessing</li>
+<li>Trajectory modeling</li>
+<li>Salinity reconstruction</li>
+<li>Evaluation and validation</li>
+</ol>
+
+</div>
+
+<p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
+
+</section>
+
+
+
+<!-- PROGRESS PAGE -->
+
+<section id="progress" class="hidden-page">
+
+<h2>Current Progress</h2>
+<h4>Slides 8–9</h4>
+
+<div class="panel-grid">
+
+<figure>
+<div class="placeholder-card">
+<div>
+<h4>Result Figure</h4>
+<p>Insert experimental results</p>
+</div>
+</div>
+</figure>
+
+<figure>
+<div class="placeholder-card">
+<div>
+<h4>Visualization</h4>
+<p>Insert prediction visualization</p>
+</div>
+</div>
+</figure>
+
+</div>
+
+<div class="content-card">
+<h3>Next Steps</h3>
+
+<ul>
+<li>Improve model accuracy</li>
+<li>Expand dataset coverage</li>
+<li>Evaluate reconstruction quality</li>
+</ul>
+
+</div>
+
+<p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
+
+</section>
+
+</main>
+
+
+
+<footer class="container">
+<small>Ocean Salinity Project • NSF Collaboration</small>
+</footer>
+
+
+
+<script>
+
+function showPage(pageId){
+
+const pages=["home","task1","progress"];
+
+pages.forEach(id=>{
+document.getElementById(id).classList.remove("active-page");
+document.getElementById(id).classList.add("hidden-page");
+});
+
+document.getElementById(pageId).classList.remove("hidden-page");
+document.getElementById(pageId).classList.add("active-page");
+
+}
+
+</script>
+
+
 </body>
 </html>
