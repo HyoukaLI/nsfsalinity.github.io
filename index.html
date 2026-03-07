@@ -1,666 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ocean Salinity Imputation using Sparse Drifter Trajectories</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-  <style>
-    :root{
-      --card:#ffffff;
-      --border:rgba(15,23,42,.08);
-      --text:#0f172a;
-      --muted:#64748b;
-      --red:#a61d2d;
-    }
-
-    *{box-sizing:border-box;}
-
-    body{
-      margin:0;
-      background:linear-gradient(180deg,#f3f7fb 0%, #ffffff 100%);
-      color:var(--text);
-    }
-
-    nav.container-fluid{
-      position:sticky;
-      top:0;
-      z-index:50;
-      background:rgba(255,255,255,.92);
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--border);
-    }
-
-    main.container{
-      padding-top:2rem;
-      padding-bottom:3rem;
-    }
-
-    .hidden-page{display:none;}
-    .active-page{display:block;}
-
-    .poster{
-      background:linear-gradient(135deg,#1d4f82 0%, #157ca0 100%);
-      border-radius:28px;
-      padding:4rem 2rem 3.5rem;
-      color:#fff;
-      text-align:center;
-      box-shadow:0 22px 50px rgba(15,23,42,.16);
-      overflow:hidden;
-      position:relative;
-      margin-bottom:2.5rem;
-    }
-
-    .poster::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:repeating-linear-gradient(
-        -45deg,
-        rgba(255,255,255,.03),
-        rgba(255,255,255,.03) 8px,
-        transparent 8px,
-        transparent 18px
-      );
-      pointer-events:none;
-    }
-
-    .poster > *{
-      position:relative;
-      z-index:1;
-    }
-
-    .logo-bar{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:1.1rem;
-      flex-wrap:wrap;
-      margin-bottom:2rem;
-    }
-
-    .logo-card{
-      background:#fff;
-      border-radius:16px;
-      padding:.8rem 1rem;
-      min-width:86px;
-      min-height:70px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 10px 20px rgba(0,0,0,.12);
-    }
-
-    .logo-card img{
-      max-height:48px;
-      max-width:140px;
-      width:auto;
-      height:auto;
-      object-fit:contain;
-      display:block;
-    }
-
-    .poster h1{
-      font-size:clamp(2.3rem,5.6vw,4.8rem);
-      line-height:1.08;
-      margin:.5rem 0 1rem;
-      color:#fff;
-    }
-
-    .subtitle{
-      max-width:850px;
-      margin:0 auto;
-      color:#e6f2ff;
-      font-size:1.08rem;
-    }
-
-    .hero-actions{
-      margin-top:2rem;
-      display:flex;
-      justify-content:center;
-      gap:.9rem;
-      flex-wrap:wrap;
-    }
-
-    .hero-summary{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:1rem;
-      margin-top:2.2rem;
-    }
-
-    .hero-summary .item{
-      text-align:left;
-      background:rgba(255,255,255,.1);
-      border:1px solid rgba(255,255,255,.15);
-      border-radius:18px;
-      padding:1rem 1.1rem;
-    }
-
-    .hero-summary .item strong{
-      color:#fff;
-      display:block;
-      margin-bottom:.35rem;
-    }
-
-    .hero-summary .item span{
-      color:rgba(255,255,255,.85);
-      font-size:.95rem;
-    }
-
-    .content-card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:22px;
-      box-shadow:0 12px 30px rgba(15,23,42,.06);
-      padding:1.6rem;
-      margin-bottom:1.3rem;
-    }
-
-    .page-title{
-      margin-bottom:1rem;
-    }
-
-    .page-title h2{
-      margin-bottom:.15rem;
-    }
-
-    .slide-block{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:22px;
-      box-shadow:0 12px 30px rgba(15,23,42,.06);
-      padding:1.8rem;
-      margin-bottom:1.5rem;
-    }
-
-    .slide-header{
-      display:flex;
-      align-items:center;
-      gap:1rem;
-      margin-bottom:1rem;
-    }
-
-    .slide-bar{
-      width:10px;
-      height:58px;
-      background:var(--red);
-      border-radius:6px;
-      flex:0 0 auto;
-    }
-
-    .slide-title{
-      color:var(--red);
-      font-size:2.2rem;
-      margin:0;
-      font-weight:800;
-      font-family:Georgia, "Times New Roman", serif;
-    }
-
-    .slide-section{
-      display:grid;
-      grid-template-columns:1.7fr .9fr;
-      gap:2rem;
-      align-items:start;
-      margin-top:.5rem;
-    }
-
-    .slide-left{
-      font-size:1.08rem;
-      line-height:1.6;
-    }
-
-    .slide-left h3{
-      font-size:1.8rem;
-      margin-top:.3rem;
-      margin-bottom:1.25rem;
-      font-family:Georgia, "Times New Roman", serif;
-    }
-
-    .slide-left p{
-      margin-bottom:1rem;
-    }
-
-    .slide-left ul{
-      margin-top:.4rem;
-      margin-bottom:1rem;
-      padding-left:1.35rem;
-    }
-
-    .slide-left li{
-      margin-bottom:.55rem;
-    }
-
-    .slide-left .section-label{
-      font-weight:800;
-      color:#3f3f46;
-    }
-
-    .slide-right{
-      display:flex;
-      flex-direction:column;
-      gap:1rem;
-      justify-content:flex-start;
-    }
-
-    .slide-right img,
-    .slide-right .img-placeholder{
-      width:100%;
-      border-radius:12px;
-      border:1px solid rgba(15,23,42,.08);
-      box-shadow:0 6px 18px rgba(15,23,42,.08);
-      background:#fff;
-      object-fit:cover;
-    }
-
-    .slide-right img.top-image,
-    .slide-right .top-image{
-      aspect-ratio:16 / 9;
-    }
-
-    .slide-right img.bottom-image,
-    .slide-right .bottom-image{
-      aspect-ratio:4 / 3;
-    }
-
-    .img-placeholder{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      color:var(--muted);
-      padding:1rem;
-      min-height:260px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,.96)),
-        repeating-linear-gradient(
-          -45deg,
-          #f8fafc,
-          #f8fafc 14px,
-          #eef2f7 14px,
-          #eef2f7 28px
-        );
-    }
-
-    footer.container{
-      padding-bottom:2rem;
-    }
-
-    @media (max-width: 960px){
-      .slide-section,
-      .hero-summary{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width: 768px){
-      .poster{
-        padding:3rem 1.1rem 2.8rem;
-      }
-
-      .logo-card{
-        min-width:72px;
-        min-height:62px;
-        padding:.65rem .8rem;
-      }
-
-      .logo-card img{
-        max-height:40px;
-      }
-
-      .slide-title{
-        font-size:1.8rem;
-      }
-
-      .slide-left{
-        font-size:1rem;
-      }
-
-      .slide-left h3{
-        font-size:1.45rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <nav class="container-fluid">
-    <ul>
-      <li><strong>NSF Project</strong></li>
-    </ul>
-    <ul>
-      <li><a href="#home" onclick="showPage('home')">Home</a></li>
-      <li><a href="#task1" onclick="showPage('task1')">Task 1</a></li>
-      <li><a href="#progress" role="button" onclick="showPage('progress')">Current Progress</a></li>
-    </ul>
-  </nav>
-
-  <main class="container">
-    <section id="home" class="active-page">
-      <section class="poster">
-        <div class="logo-bar">
-          <div class="logo-card">
-            <img src="pic/Picture1.png" alt="Griffith University logo">
-          </div>
-          <div class="logo-card">
-            <img src="pic/Picture2.png" alt="NSF logo">
-          </div>
-          <div class="logo-card">
-            <img src="pic/Picture3.png" alt="Florida Atlantic University logo">
-          </div>
-          <div class="logo-card">
-            <img src="pic/Picture4.png" alt="CSIRO logo">
-          </div>
-        </div>
-
-        <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
-
-        <p class="subtitle">
-          A research project focused on leveraging sparse drifter trajectories for ocean salinity reconstruction.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#task1" role="button" onclick="showPage('task1')">Explore Task 1</a>
-          <a href="#progress" role="button" class="secondary" onclick="showPage('progress')">View Progress</a>
-        </div>
-      </section>
-
-      <div class="content-card">
-        <h3>Project Motivation</h3>
-        <p>
-          This project investigates ocean salinity imputation under sparse observational settings.
-          The website is designed as a research-style landing page that summarizes the background,
-          technical task, and current progress in a clean presentation format.
-        </p>
+<section id="home" class="active-page">
+  <section class="poster">
+    <div class="logo-bar">
+      <div class="logo-card">
+        <img src="pic/Picture1.png" alt="Griffith University logo">
       </div>
-
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Background</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Ocean Drifter: Pillars of Modern Marine Observation</h3>
-
-            <p>
-              <span class="section-label">1. Key Role:</span>
-              Autonomous platforms providing continuous, real-time data from inaccessible ocean regions
-              (~71% Earth's surface).
-            </p>
-
-            <p class="section-label">2. Core Functions:</p>
-            <ul>
-              <li>Monitor essential oceanographic variables (EOVs): Temperature, Salinity, Waves, Currents, Atmospheric-Ocean fluxes.</li>
-              <li>Support climate modeling, weather forecasting, and ecosystem studies.</li>
-            </ul>
-
-            <p class="section-label">3. Strategic Value:</p>
-            <ul>
-              <li>Complement satellite/remote sensing by providing in-situ validation and subsurface measurements.</li>
-              <li>Enable long-term time-series data critical for detecting climate trends such as ocean warming and acidification.</li>
-            </ul>
-          </div>
-
-     <div class="slide-right">
-    <img src="pic/Picture5.png" class="top-image" alt="Global Drifter Array Map">
+      <div class="logo-card">
+        <img src="pic/Picture2.png" alt="NSF logo">
+      </div>
+      <div class="logo-card">
+        <img src="pic/Picture3.png" alt="Florida Atlantic University logo">
+      </div>
+      <div class="logo-card">
+        <img src="pic/Picture4.png" alt="CSIRO logo">
+      </div>
     </div>
 
-<div class="slide-right">
-  <img src="pic/Picture6.jpg" class="bottom-image" alt="Global Drifter Array Map">
-</div>
+    <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
 
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Background</h2>
-        </div>
+    <p class="subtitle">
+      A research project focused on leveraging sparse drifter trajectories for ocean salinity reconstruction.
+    </p>
 
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Ocean Drifter: Advantages and Challenges</h3>
+    <div class="hero-actions">
+      <a href="#task1" role="button" onclick="showPage('task1')">Explore Task 1</a>
+      <a href="#progress" role="button" class="secondary" onclick="showPage('progress')">View Progress</a>
+    </div>
+  </section>
 
-            <ul>
-              <li>
-                <strong>Advantages</strong>
-                <ul>
-                  <li><strong>Direct observation:</strong> Drifters equipped with hydrological sensors can be used to measure salinity along the drifter track.</li>
-                  <li><strong>Suitable for complex nearshore environments:</strong> Salinity in offshore/coastal areas fluctuates dramatically. In these regions, satellite salinity data suffers from low resolution and high noise, whereas drifters can capture finer-grained dynamic variations.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Challenges</strong>
-                <ul>
-                  <li><strong>Data Sparsity:</strong> Insufficient capacity to capture long-range dependencies across sparse drifter tracks.</li>
-                  <li><strong>Instability or Bias:</strong> Heterogeneous data distributions caused by drifting sensors and dynamic ocean conditions.</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-<div class="slide-right">
-  <img src="pic/Picture5.png" class="top-image" alt="Global Drifter Array Map">
-</div>
-
-            <div class="img-placeholder bottom-image">
-              <div>
-                <h5>Bottom Image Placeholder</h5>
-                <p>Insert the drifter deployment photo here</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="task1" class="hidden-page">
-      <hgroup class="page-title">
-        <h2>Task 1</h2>
-        <h3>Introduction, problem definition, core idea, methodology, and results</h3>
-      </hgroup>
-
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Introduction</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Why Ocean Salinity Imputation Matters</h3>
-            <p>
-              Ocean salinity is a fundamental variable for understanding ocean circulation,
-              climate processes, water-mass formation, and nutrient transport. Nearshore and
-              coastal waters are especially challenging because salinity changes dynamically
-              under the influence of freshwater inflow, tides, wind forcing, and human activity.
-            </p>
-            <p>
-              Drifters equipped with hydrological sensors can measure salinity along their tracks,
-              but the resulting observations are sparse, irregular, and noisy. This makes the task
-              naturally an imputation problem: estimating missing salinity values across time and space
-              from limited drifter observations.
-            </p>
-            <p>
-              Traditional methods such as remote sensing, optimal interpolation, and Kriging are
-              limited by linearity assumptions, spatial stationarity, low revisit frequency, cloud
-              occlusion, and weak capacity to model complex spatiotemporal dependencies.
-            </p>
-          </div>
-
-          <div class="slide-right">
-            <div class="img-placeholder top-image">
-              <div>
-                <h5>NSF Dataset GIF Placeholder</h5>
-                <p>Insert NSF dataset animation / drifter trajectory GIF here</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Problem Definition</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Spatiotemporal Salinity Imputation from Sparse Drifter Trajectories</h3>
-            <p>
-              The task is to reconstruct missing salinity values from sparse and irregularly sampled
-              drifter trajectories over time and geographic grids.
-            </p>
-            <p>
-              In the paper, the drifter observations are represented as a partially observed tensor
-              over time, latitude, longitude, and sensor variables, while a binary mask indicates
-              which values are observed and which are missing.
-            </p>
-            <p>
-              The learning objective is to estimate salinity at arbitrary times and locations in the study
-              area, despite severe sparsity, heterogeneous sensor distributions, and complex ocean dynamics.
-            </p>
-          </div>
-
-          <div class="slide-right">
-            <div class="img-placeholder top-image">
-              <div>
-                <h5>Problem Definition Placeholder</h5>
-                <p>Insert your problem illustration here</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="content-card">
-        <h3>Core Idea</h3>
-        <p>
-          The paper proposes <strong>OASIS</strong>, a diffusion adversarial framework for ocean salinity imputation.
-          Its core idea is to combine three strengths into one unified system:
-        </p>
-        <ul>
-          <li><strong>Normalization</strong> to reduce distribution shift and bias across drifting sensors.</li>
-          <li><strong>Global Dependency Capturing</strong> with a transformer-based module to learn long-range spatiotemporal correlations.</li>
-          <li><strong>Diffusion Adversarial Learning</strong> to progressively refine imputed salinity fields under severe sparsity.</li>
-        </ul>
-        <p>
-          A key design choice is conditioning the model on <strong>tidal height</strong>, which serves as a practical,
-          low-cost proxy for otherwise unmeasured physical drivers.
-        </p>
-      </div>
-
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Methodology</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>OASIS Pipeline</h3>
-            <ul>
-              <li><strong>Step 1:</strong> Normalize drifter observations to reduce sensor-specific distribution shifts.</li>
-              <li><strong>Step 2:</strong> Encode temporal and spatial information with a transformer-based global dependency module.</li>
-              <li><strong>Step 3:</strong> Use a scheduler-guided diffusion adversarial network to generate and refine salinity imputations.</li>
-              <li><strong>Step 4:</strong> Condition the model on tide information to improve physical consistency and predictive accuracy.</li>
-            </ul>
-            <p>
-              The generator reconstructs realistic salinity values, while the discriminator distinguishes
-              real from generated samples after diffusion-based perturbation. Together, they improve both
-              robustness and fidelity.
-            </p>
-          </div>
-
-          <div class="slide-right">
-            <div class="img-placeholder top-image">
-              <div>
-                <h5>Methodology Placeholder</h5>
-                <p>Insert model architecture / pipeline figure here</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Results</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Key Findings</h3>
-            <ul>
-              <li>OASIS consistently outperforms traditional and neural baselines across multiple benchmark datasets.</li>
-              <li>On the FP Observed dataset, it improves over the best baseline in MAE, RMSE, and MAPE.</li>
-              <li>It captures both large-scale salinity gradients and localized variations under sparse sampling.</li>
-              <li>Ablation studies show that normalization, global dependency capturing, and scheduler diffusion all contribute substantially.</li>
-            </ul>
-            <p>
-              The paper also shows that tide information becomes useful when integrated through the proposed framework,
-              whereas naive inclusion in simpler baselines can provide only marginal or inconsistent benefits.
-            </p>
-          </div>
-
-          <div class="slide-right">
-            <div class="img-placeholder top-image">
-              <div>
-                <h5>Results Placeholder</h5>
-                <p>Insert quantitative table / qualitative comparison figure here</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
-    </section>
-
-    <section id="progress" class="hidden-page">
-  <hgroup class="page-title">
-    <h2>Current Progress</h2>
-    <h3>Method overview and visualization-based experimental results</h3>
-  </hgroup>
+  <div class="content-card">
+    <h3>Project Motivation</h3>
+    <p>
+      This project investigates ocean salinity imputation under sparse observational settings.
+      The website is designed as a research-style landing page that summarizes the background,
+      technical task, and current progress in a clean presentation format.
+    </p>
+  </div>
 
   <div class="slide-block">
     <div class="slide-header">
       <div class="slide-bar"></div>
-      <h2 class="slide-title">Method Overview</h2>
+      <h2 class="slide-title">Background</h2>
     </div>
 
     <div class="slide-section">
       <div class="slide-left">
-        <h3>GridGNN for Ocean Salinity Imputation</h3>
+        <h3>Ocean Drifter: Pillars of Modern Marine Observation</h3>
+
         <p>
-          Our current progress focuses on <strong>GridGNN</strong>, a trajectory-aware graph learning
-          framework designed for ocean salinity imputation from sparse drifter observations.
-          The method first maps irregular drifter measurements onto a regular spatial grid,
-          then constructs local graphs within each grid cell and a global graph across cells.
+          <span class="section-label">1. Key Role:</span>
+          Autonomous platforms providing continuous, real-time data from inaccessible ocean regions
+          (~71% Earth's surface).
         </p>
+
+        <p class="section-label">2. Core Functions:</p>
         <ul>
-          <li><strong>Grid Construction:</strong> Irregular drifter observations are discretized into latitude–longitude grid cells to provide a consistent spatial framework.</li>
-          <li><strong>Trajectory-Aware Graph Construction:</strong> The model combines trajectory edges and spatial KNN edges, so it can capture both along-track continuity and local spatial similarity.</li>
-          <li><strong>Local Message Passing:</strong> Two graph streams process trajectory relations and spatial neighborhood relations separately.</li>
-          <li><strong>Multi-Graph Fusion:</strong> The two streams are fused into a unified local representation.</li>
-          <li><strong>Global Propagation:</strong> Information is propagated across adjacent grid cells to recover larger-scale structures.</li>
-          <li><strong>Prediction Head:</strong> Final node embeddings are mapped to salinity predictions for imputation.</li>
+          <li>Monitor essential oceanographic variables (EOVs): Temperature, Salinity, Waves, Currents, Atmospheric-Ocean fluxes.</li>
+          <li>Support climate modeling, weather forecasting, and ecosystem studies.</li>
         </ul>
-        <p>
-          This design allows the framework to model both fine-scale local variability
-          and large-scale spatial coherence, which is especially important under sparse,
-          irregular, and heterogeneous drifter sampling.
-        </p>
+
+        <p class="section-label">3. Strategic Value:</p>
+        <ul>
+          <li>Complement satellite/remote sensing by providing in-situ validation and subsurface measurements.</li>
+          <li>Enable long-term time-series data critical for detecting climate trends such as ocean warming and acidification.</li>
+        </ul>
       </div>
 
       <div class="slide-right">
-        <div class="img-placeholder top-image">
-          <div>
-            <h5>Method Figure Placeholder</h5>
-            <p>Insert GridGNN pipeline / framework diagram here</p>
-          </div>
-        </div>
+        <img src="pic/Picture5.png" class="top-image" alt="Global Drifter Array Map">
+        <img src="pic/Picture6.jpg" class="bottom-image" alt="Drifter Deployment">
       </div>
     </div>
   </div>
@@ -668,70 +75,36 @@
   <div class="slide-block">
     <div class="slide-header">
       <div class="slide-bar"></div>
-      <h2 class="slide-title">Experimental Results</h2>
+      <h2 class="slide-title">Background</h2>
     </div>
 
     <div class="slide-section">
       <div class="slide-left">
-        <h3>Visualization-Based Findings</h3>
-        <p>
-          To qualitatively evaluate reconstruction quality, the paper visualizes predicted
-          salinity distributions across nine geographically diverse regions. These regions
-          cover multiple oceanographic regimes, including coastal shelves, equatorial oceans,
-          transport-dominated regions, and high-latitude Arctic environments.
-        </p>
+        <h3>Ocean Drifter: Advantages and Challenges</h3>
+
         <ul>
-          <li><strong>Coastal and Equatorial Regions:</strong> The model captures localized salinity transitions and mesoscale structures without excessive smoothing.</li>
-          <li><strong>Transport-Dominated Regions:</strong> Reconstructed fields preserve coherent zonal gradients and along-trajectory advective consistency.</li>
-          <li><strong>Sparsely Sampled Regions:</strong> Even under fragmented trajectories and low neighborhood density, the model still produces spatially consistent and physically plausible reconstructions.</li>
-          <li><strong>Overall Observation:</strong> The visual agreement between observations and predictions shows that the model preserves both large-scale spatial structure and fine-scale variability.</li>
+          <li>
+            <strong>Advantages</strong>
+            <ul>
+              <li><strong>Direct observation:</strong> Drifters equipped with hydrological sensors can be used to measure salinity along the drifter track.</li>
+              <li><strong>Suitable for complex nearshore environments:</strong> Salinity in offshore/coastal areas fluctuates dramatically. In these regions, satellite salinity data suffers from low resolution and high noise, whereas drifters can capture finer-grained dynamic variations.</li>
+            </ul>
+          </li>
+
+          <li>
+            <strong>Challenges</strong>
+            <ul>
+              <li><strong>Data Sparsity:</strong> Insufficient capacity to capture long-range dependencies across sparse drifter tracks.</li>
+              <li><strong>Instability or Bias:</strong> Heterogeneous data distributions caused by drifting sensors and dynamic ocean conditions.</li>
+            </ul>
+          </li>
         </ul>
-        <p>
-          These visualization results suggest that the model achieves not only low numerical error,
-          but also strong spatial realism across very different marine environments.
-        </p>
       </div>
 
       <div class="slide-right">
-        <div class="img-placeholder top-image">
-          <div>
-            <h5>Visualization Placeholder</h5>
-            <p>Insert regional qualitative comparison / salinity visualization here</p>
-          </div>
-        </div>
+        <img src="pic/Picture5.png" class="top-image" alt="Global Drifter Array Map">
+        <img src="pic/Picture6.jpg" class="bottom-image" alt="Drifter Deployment">
       </div>
     </div>
   </div>
-
-  <p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
 </section>
-
-  <footer class="container">
-    <small>
-      <a href="#home" onclick="showPage('home')">Home</a> •
-      <a href="#task1" onclick="showPage('task1')">Task 1</a> •
-      <a href="#progress" onclick="showPage('progress')">Current Progress</a>
-    </small>
-  </footer>
-
-  <script>
-    function showPage(pageId){
-      const pages = ["home","task1","progress"];
-      pages.forEach(id => {
-        document.getElementById(id).classList.remove("active-page");
-        document.getElementById(id).classList.add("hidden-page");
-      });
-      document.getElementById(pageId).classList.remove("hidden-page");
-      document.getElementById(pageId).classList.add("active-page");
-      window.location.hash = pageId;
-    }
-
-    window.addEventListener("load", () => {
-      const hash = window.location.hash.replace("#", "");
-      if (["home","task1","progress"].includes(hash)) {
-        showPage(hash);
-      }
-    });
-  </script>
-</body>
-</html>
