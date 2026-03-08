@@ -699,11 +699,6 @@
               Progressively refines imputed salinity fields under severe sparsity.
             </div>
           </div>
-
-          <p>
-            A key design choice is conditioning the model on <strong>tidal height</strong>, which serves as a practical,
-            low-cost proxy for otherwise unmeasured physical drivers.
-          </p>
         </div>
 
         <div class="slide-block task1-section task1-method">
@@ -749,10 +744,6 @@
                 <li>It captures both large-scale salinity gradients and localized variations under sparse sampling.</li>
                 <li>Ablation studies show that normalization, global dependency capturing, and scheduler diffusion all contribute substantially.</li>
               </ul>
-              <p>
-                The paper also shows that tide information becomes useful when integrated through the proposed framework,
-                whereas naive inclusion in simpler baselines can provide only marginal or inconsistent benefits.
-              </p>
             </div>
 
             <div class="slide-right">
