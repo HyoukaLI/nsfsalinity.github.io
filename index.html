@@ -230,14 +230,17 @@
       background:#fff;
     }
 
+    .slide-right img{
+      object-fit:contain;
+    }
+
     .top-image{
       aspect-ratio:16 / 9;
-      object-fit:contain;
     }
 
     .bottom-image{
       aspect-ratio:4 / 3;
-      object-fit:cover;
+      object-fit:cover !important;
     }
 
     .gif-image{
@@ -264,13 +267,6 @@
           #eef2f7 14px,
           #eef2f7 28px
         );
-    }
-
-    .figure-caption{
-      text-align:center;
-      color:var(--muted);
-      font-size:.92rem;
-      margin-top:.25rem;
     }
 
     footer.container{
@@ -500,12 +496,7 @@
           </div>
 
           <div class="slide-right">
-            <div class="img-placeholder">
-              <div>
-                <h5>Problem Definition Placeholder</h5>
-                <p>Insert your problem illustration here</p>
-              </div>
-            </div>
+            <img src="pic/definition.png" class="top-image" alt="Problem Definition Diagram">
           </div>
         </div>
       </div>
@@ -550,12 +541,7 @@
           </div>
 
           <div class="slide-right">
-            <div class="img-placeholder">
-              <div>
-                <h5>Methodology Placeholder</h5>
-                <p>Insert model architecture / pipeline figure here</p>
-              </div>
-            </div>
+            <img src="pic/method.png" class="top-image" alt="Methodology Pipeline">
           </div>
         </div>
       </div>
@@ -582,12 +568,7 @@
           </div>
 
           <div class="slide-right">
-            <div class="img-placeholder">
-              <div>
-                <h5>Results Placeholder</h5>
-                <p>Insert quantitative table / qualitative comparison figure here</p>
-              </div>
-            </div>
+            <img src="pic/OASIS_visual.png" class="top-image" alt="OASIS Visualization Results">
           </div>
         </div>
       </div>
