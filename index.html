@@ -313,7 +313,8 @@
       color:#1f2937;
     }
 
-    .task1-layout{
+    .task1-layout,
+    .progress-layout{
       display:flex;
       flex-direction:column;
       gap:1.5rem;
@@ -361,12 +362,49 @@
       min-height:340px;
     }
 
+    .progress-section .slide-section{
+      grid-template-columns:minmax(0, 1.18fr) minmax(400px, 1fr);
+      gap:2.4rem;
+      align-items:center;
+    }
+
+    .progress-section .slide-left{
+      font-size:1.06rem;
+      line-height:1.76;
+    }
+
+    .progress-section .slide-left h3{
+      font-size:1.95rem;
+      margin-bottom:1rem;
+    }
+
+    .progress-section .slide-right{
+      align-self:stretch;
+      justify-content:center;
+    }
+
+    .progress-section .slide-right img{
+      width:100%;
+      max-width:100%;
+    }
+
+    .progress-method img{
+      min-height:380px;
+      padding:.55rem;
+    }
+
+    .progress-results img{
+      min-height:360px;
+      padding:.55rem;
+    }
+
     footer.container{
       padding-bottom:2rem;
     }
 
     @media (max-width: 1100px){
-      .task1-section .slide-section{
+      .task1-section .slide-section,
+      .progress-section .slide-section{
         grid-template-columns:1fr;
       }
     }
@@ -408,7 +446,8 @@
         font-size:1.45rem;
       }
 
-      .task1-section .slide-left h3{
+      .task1-section .slide-left h3,
+      .progress-section .slide-left h3{
         font-size:1.6rem;
       }
 
@@ -417,7 +456,9 @@
       .figure-medium,
       .task1-problem img,
       .task1-method img,
-      .task1-results img{
+      .task1-results img,
+      .progress-method img,
+      .progress-results img{
         min-height:auto;
       }
     }
@@ -431,7 +472,7 @@
     <ul>
       <li><a href="#home" onclick="showPage('home')">Home</a></li>
       <li><a href="#task1" onclick="showPage('task1')">Task 1</a></li>
-      <li><a href="#progress" role="button" onclick="showPage('progress')">Current Progress</a></li>
+      <li><a href="#progress" onclick="showPage('progress')" role="button">Current Progress</a></li>
     </ul>
   </nav>
 
@@ -483,7 +524,6 @@
         <div class="slide-section">
           <div class="slide-left">
             <h3>Ocean Drifter: Pillars of Modern Marine Observation</h3>
-
             <p>
               <span class="section-label">1. Key Role:</span>
               Autonomous platforms providing continuous, real-time data from inaccessible ocean regions
@@ -519,7 +559,6 @@
         <div class="slide-section">
           <div class="slide-left">
             <h3>Ocean Drifter: Advantages and Challenges</h3>
-
             <ul>
               <li>
                 <strong>Advantages</strong>
@@ -710,71 +749,73 @@
         <h3>Method overview and visualization-based experimental results</h3>
       </hgroup>
 
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Method Overview</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>GridGNN for Ocean Salinity Imputation</h3>
-            <p>
-              Our current progress focuses on <strong>GridGNN</strong>, a trajectory-aware graph learning
-              framework designed for ocean salinity imputation from sparse drifter observations.
-              The method first maps irregular drifter measurements onto a regular spatial grid,
-              then constructs local graphs within each grid cell and a global graph across cells.
-            </p>
-            <ul>
-              <li><strong>Grid Construction:</strong> Irregular drifter observations are discretized into latitude–longitude grid cells to provide a consistent spatial framework.</li>
-              <li><strong>Trajectory-Aware Graph Construction:</strong> The model combines trajectory edges and spatial KNN edges, so it can capture both along-track continuity and local spatial similarity.</li>
-              <li><strong>Local Message Passing:</strong> Two graph streams process trajectory relations and spatial neighborhood relations separately.</li>
-              <li><strong>Multi-Graph Fusion:</strong> The two streams are fused into a unified local representation.</li>
-              <li><strong>Global Propagation:</strong> Information is propagated across adjacent grid cells to recover larger-scale structures.</li>
-              <li><strong>Prediction Head:</strong> Final node embeddings are mapped to salinity predictions for imputation.</li>
-            </ul>
-            <p>
-              This design allows the framework to model both fine-scale local variability
-              and large-scale spatial coherence, which is especially important under sparse,
-              irregular, and heterogeneous drifter sampling.
-            </p>
+      <div class="progress-layout">
+        <div class="slide-block progress-section progress-method">
+          <div class="slide-header">
+            <div class="slide-bar"></div>
+            <h2 class="slide-title">Method Overview</h2>
           </div>
 
-          <div class="slide-right">
-            <img src="pic/GridGNN.png" class="top-image" alt="GridGNN Framework">
+          <div class="slide-section">
+            <div class="slide-left">
+              <h3>GridGNN for Ocean Salinity Imputation</h3>
+              <p>
+                Our current progress focuses on <strong>GridGNN</strong>, a trajectory-aware graph learning
+                framework designed for ocean salinity imputation from sparse drifter observations.
+                The method first maps irregular drifter measurements onto a regular spatial grid,
+                then constructs local graphs within each grid cell and a global graph across cells.
+              </p>
+              <ul>
+                <li><strong>Grid Construction:</strong> Irregular drifter observations are discretized into latitude–longitude grid cells to provide a consistent spatial framework.</li>
+                <li><strong>Trajectory-Aware Graph Construction:</strong> The model combines trajectory edges and spatial KNN edges, so it can capture both along-track continuity and local spatial similarity.</li>
+                <li><strong>Local Message Passing:</strong> Two graph streams process trajectory relations and spatial neighborhood relations separately.</li>
+                <li><strong>Multi-Graph Fusion:</strong> The two streams are fused into a unified local representation.</li>
+                <li><strong>Global Propagation:</strong> Information is propagated across adjacent grid cells to recover larger-scale structures.</li>
+                <li><strong>Prediction Head:</strong> Final node embeddings are mapped to salinity predictions for imputation.</li>
+              </ul>
+              <p>
+                This design allows the framework to model both fine-scale local variability
+                and large-scale spatial coherence, which is especially important under sparse,
+                irregular, and heterogeneous drifter sampling.
+              </p>
+            </div>
+
+            <div class="slide-right">
+              <img src="pic/GridGNN.png" class="figure-large" alt="GridGNN Framework">
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Experimental Results</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Visualization-Based Findings</h3>
-            <p>
-              To qualitatively evaluate reconstruction quality, the paper visualizes predicted
-              salinity distributions across nine geographically diverse regions. These regions
-              cover multiple oceanographic regimes, including coastal shelves, equatorial oceans,
-              transport-dominated regions, and high-latitude Arctic environments.
-            </p>
-            <ul>
-              <li><strong>Coastal and Equatorial Regions:</strong> The model captures localized salinity transitions and mesoscale structures without excessive smoothing.</li>
-              <li><strong>Transport-Dominated Regions:</strong> Reconstructed fields preserve coherent zonal gradients and along-trajectory advective consistency.</li>
-              <li><strong>Sparsely Sampled Regions:</strong> Even under fragmented trajectories and low neighborhood density, the model still produces spatially consistent and physically plausible reconstructions.</li>
-              <li><strong>Overall Observation:</strong> The visual agreement between observations and predictions shows that the model preserves both large-scale spatial structure and fine-scale variability.</li>
-            </ul>
-            <p>
-              These visualization results suggest that the model achieves not only low numerical error,
-              but also strong spatial realism across very different marine environments.
-            </p>
+        <div class="slide-block progress-section progress-results">
+          <div class="slide-header">
+            <div class="slide-bar"></div>
+            <h2 class="slide-title">Experimental Results</h2>
           </div>
 
-          <div class="slide-right">
-            <img src="pic/GridGNN_visual.png" class="top-image" alt="GridGNN Visualization Results">
+          <div class="slide-section">
+            <div class="slide-left">
+              <h3>Visualization-Based Findings</h3>
+              <p>
+                To qualitatively evaluate reconstruction quality, the paper visualizes predicted
+                salinity distributions across nine geographically diverse regions. These regions
+                cover multiple oceanographic regimes, including coastal shelves, equatorial oceans,
+                transport-dominated regions, and high-latitude Arctic environments.
+              </p>
+              <ul>
+                <li><strong>Coastal and Equatorial Regions:</strong> The model captures localized salinity transitions and mesoscale structures without excessive smoothing.</li>
+                <li><strong>Transport-Dominated Regions:</strong> Reconstructed fields preserve coherent zonal gradients and along-trajectory advective consistency.</li>
+                <li><strong>Sparsely Sampled Regions:</strong> Even under fragmented trajectories and low neighborhood density, the model still produces spatially consistent and physically plausible reconstructions.</li>
+                <li><strong>Overall Observation:</strong> The visual agreement between observations and predictions shows that the model preserves both large-scale spatial structure and fine-scale variability.</li>
+              </ul>
+              <p>
+                These visualization results suggest that the model achieves not only low numerical error,
+                but also strong spatial realism across very different marine environments.
+              </p>
+            </div>
+
+            <div class="slide-right">
+              <img src="pic/GridGNN_visual.png" class="figure-medium" alt="GridGNN Visualization Results">
+            </div>
           </div>
         </div>
       </div>
