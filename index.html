@@ -461,6 +461,28 @@
       .progress-results img{
         min-height:auto;
       }
+      .results-vertical{
+  display:flex;
+  flex-direction:column;
+  gap:30px;
+}
+
+.results-text{
+  max-width:850px;
+}
+
+.results-figure{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+
+.results-figure img{
+  width:85%;
+  max-width:1000px;
+  border-radius:14px;
+  box-shadow:0 10px 24px rgba(15,23,42,.12);
+}
     }
   </style>
 </head>
@@ -786,39 +808,50 @@
           </div>
         </div>
 
-        <div class="slide-block progress-section progress-results">
-          <div class="slide-header">
-            <div class="slide-bar"></div>
-            <h2 class="slide-title">Experimental Results</h2>
-          </div>
+<div class="slide-block progress-section progress-results">
 
-          <div class="slide-section">
-            <div class="slide-left">
-              <h3>Visualization-Based Findings</h3>
-              <p>
-                To qualitatively evaluate reconstruction quality, the paper visualizes predicted
-                salinity distributions across nine geographically diverse regions. These regions
-                cover multiple oceanographic regimes, including coastal shelves, equatorial oceans,
-                transport-dominated regions, and high-latitude Arctic environments.
-              </p>
-              <ul>
-                <li><strong>Coastal and Equatorial Regions:</strong> The model captures localized salinity transitions and mesoscale structures without excessive smoothing.</li>
-                <li><strong>Transport-Dominated Regions:</strong> Reconstructed fields preserve coherent zonal gradients and along-trajectory advective consistency.</li>
-                <li><strong>Sparsely Sampled Regions:</strong> Even under fragmented trajectories and low neighborhood density, the model still produces spatially consistent and physically plausible reconstructions.</li>
-                <li><strong>Overall Observation:</strong> The visual agreement between observations and predictions shows that the model preserves both large-scale spatial structure and fine-scale variability.</li>
-              </ul>
-              <p>
-                These visualization results suggest that the model achieves not only low numerical error,
-                but also strong spatial realism across very different marine environments.
-              </p>
-            </div>
+  <div class="slide-header">
+    <div class="slide-bar"></div>
+    <h2 class="slide-title">Experimental Results</h2>
+  </div>
 
-            <div class="slide-right">
-              <img src="pic/GridGNN_visual.png" class="figure-medium" alt="GridGNN Visualization Results">
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="results-vertical">
+
+    <div class="results-text">
+
+      <h3>Visualization-Based Findings</h3>
+
+      <p>
+        To qualitatively evaluate reconstruction quality, the paper visualizes predicted
+        salinity distributions across nine geographically diverse regions. These regions
+        cover multiple oceanographic regimes, including coastal shelves, equatorial oceans,
+        transport-dominated regions, and high-latitude Arctic environments.
+      </p>
+
+      <ul>
+        <li><strong>Coastal and Equatorial Regions:</strong> The model captures localized salinity transitions and mesoscale structures without excessive smoothing.</li>
+
+        <li><strong>Transport-Dominated Regions:</strong> Reconstructed fields preserve coherent zonal gradients and along-trajectory advective consistency.</li>
+
+        <li><strong>Sparsely Sampled Regions:</strong> Even under fragmented trajectories and low neighborhood density, the model still produces spatially consistent and physically plausible reconstructions.</li>
+
+        <li><strong>Overall Observation:</strong> The visual agreement between observations and predictions shows that the model preserves both large-scale spatial structure and fine-scale variability.</li>
+      </ul>
+
+      <p>
+        These visualization results suggest that the model achieves not only low numerical error,
+        but also strong spatial realism across very different marine environments.
+      </p>
+
+    </div>
+
+    <div class="results-figure">
+      <img src="pic/GridGNN_visual.png" alt="GridGNN Visualization Results">
+    </div>
+
+  </div>
+
+</div>
 
       <p><a href="#home" onclick="showPage('home')">← Back to Home</a></p>
     </section>
