@@ -12,6 +12,8 @@
       --text:#0f172a;
       --muted:#64748b;
       --red:#a61d2d;
+      --soft:#f8fafc;
+      --shadow:0 12px 30px rgba(15,23,42,.06);
     }
 
     *{box-sizing:border-box;}
@@ -126,7 +128,7 @@
       background:var(--card);
       border:1px solid var(--border);
       border-radius:22px;
-      box-shadow:0 12px 30px rgba(15,23,42,.06);
+      box-shadow:var(--shadow);
       padding:1.6rem;
       margin-bottom:1.3rem;
     }
@@ -143,7 +145,7 @@
       background:#fff;
       border:1px solid var(--border);
       border-radius:22px;
-      box-shadow:0 12px 30px rgba(15,23,42,.06);
+      box-shadow:var(--shadow);
       padding:1.8rem;
       margin-bottom:1.5rem;
       overflow:hidden;
@@ -174,7 +176,7 @@
 
     .slide-section{
       display:grid;
-      grid-template-columns:minmax(0, 1.45fr) minmax(300px, 0.95fr);
+      grid-template-columns:minmax(0, 1.45fr) minmax(320px, 0.95fr);
       gap:2rem;
       align-items:start;
       margin-top:.5rem;
@@ -224,9 +226,9 @@
     .slide-right .img-placeholder{
       width:100%;
       display:block;
-      border-radius:12px;
+      border-radius:14px;
       border:1px solid rgba(15,23,42,.08);
-      box-shadow:0 6px 18px rgba(15,23,42,.08);
+      box-shadow:0 10px 24px rgba(15,23,42,.08);
       background:#fff;
     }
 
@@ -244,10 +246,11 @@
     }
 
     .gif-image{
-      aspect-ratio:16 / 9;
+      aspect-ratio:16 / 10;
       object-fit:contain;
       background:#fff;
-      padding:.25rem;
+      padding:.35rem;
+      min-height:340px;
     }
 
     .img-placeholder{
@@ -269,12 +272,111 @@
         );
     }
 
+    .figure-large{
+      min-height:360px;
+      aspect-ratio:auto;
+      padding:.5rem;
+    }
+
+    .figure-medium{
+      min-height:320px;
+      aspect-ratio:auto;
+      padding:.5rem;
+    }
+
+    .core-idea-card{
+      background:linear-gradient(180deg,#ffffff 0%, #f9fbfd 100%);
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:1.7rem;
+      margin-bottom:1.5rem;
+    }
+
+    .core-idea-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:1rem;
+      margin:1rem 0 1rem;
+    }
+
+    .idea-pill{
+      background:var(--soft);
+      border:1px solid rgba(15,23,42,.06);
+      border-radius:16px;
+      padding:1rem;
+    }
+
+    .idea-pill strong{
+      display:block;
+      margin-bottom:.4rem;
+      color:#1f2937;
+    }
+
+    .task1-layout{
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
+    }
+
+    .task1-section .slide-section{
+      grid-template-columns:minmax(0, 1.2fr) minmax(380px, 1fr);
+      gap:2.25rem;
+      align-items:center;
+    }
+
+    .task1-section .slide-left{
+      font-size:1.06rem;
+      line-height:1.75;
+    }
+
+    .task1-section .slide-left h3{
+      font-size:1.95rem;
+      margin-bottom:1rem;
+    }
+
+    .task1-section .slide-right{
+      align-self:stretch;
+      justify-content:center;
+    }
+
+    .task1-section .slide-right img{
+      width:100%;
+      max-width:100%;
+    }
+
+    .task1-intro .gif-image{
+      min-height:360px;
+    }
+
+    .task1-problem img{
+      min-height:330px;
+    }
+
+    .task1-method img{
+      min-height:360px;
+    }
+
+    .task1-results img{
+      min-height:340px;
+    }
+
     footer.container{
       padding-bottom:2rem;
     }
 
+    @media (max-width: 1100px){
+      .task1-section .slide-section{
+        grid-template-columns:1fr;
+      }
+    }
+
     @media (max-width: 980px){
       .slide-section{
+        grid-template-columns:1fr;
+      }
+
+      .core-idea-grid{
         grid-template-columns:1fr;
       }
     }
@@ -304,6 +406,19 @@
 
       .slide-left h3{
         font-size:1.45rem;
+      }
+
+      .task1-section .slide-left h3{
+        font-size:1.6rem;
+      }
+
+      .gif-image,
+      .figure-large,
+      .figure-medium,
+      .task1-problem img,
+      .task1-method img,
+      .task1-results img{
+        min-height:auto;
       }
     }
   </style>
@@ -437,138 +552,151 @@
         <h3>Introduction, problem definition, core idea, methodology, and results</h3>
       </hgroup>
 
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Introduction</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Why Ocean Salinity Imputation Matters</h3>
-            <p>
-              Ocean salinity is a fundamental variable for understanding ocean circulation,
-              climate processes, water-mass formation, and nutrient transport. Nearshore and
-              coastal waters are especially challenging because salinity changes dynamically
-              under the influence of freshwater inflow, tides, wind forcing, and human activity.
-            </p>
-            <p>
-              Drifters equipped with hydrological sensors can measure salinity along their tracks,
-              but the resulting observations are sparse, irregular, and noisy. This makes the task
-              naturally an imputation problem: estimating missing salinity values across time and space
-              from limited drifter observations.
-            </p>
-            <p>
-              Traditional methods such as remote sensing, optimal interpolation, and Kriging are
-              limited by linearity assumptions, spatial stationarity, low revisit frequency, cloud
-              occlusion, and weak capacity to model complex spatiotemporal dependencies.
-            </p>
+      <div class="task1-layout">
+        <div class="slide-block task1-section task1-intro">
+          <div class="slide-header">
+            <div class="slide-bar"></div>
+            <h2 class="slide-title">Introduction</h2>
           </div>
 
-          <div class="slide-right">
-            <img src="pic/nsf.gif" class="gif-image" alt="NSF dataset animation">
+          <div class="slide-section">
+            <div class="slide-left">
+              <h3>Why Ocean Salinity Imputation Matters</h3>
+              <p>
+                Ocean salinity is a fundamental variable for understanding ocean circulation,
+                climate processes, water-mass formation, and nutrient transport. Nearshore and
+                coastal waters are especially challenging because salinity changes dynamically
+                under the influence of freshwater inflow, tides, wind forcing, and human activity.
+              </p>
+              <p>
+                Drifters equipped with hydrological sensors can measure salinity along their tracks,
+                but the resulting observations are sparse, irregular, and noisy. This makes the task
+                naturally an imputation problem: estimating missing salinity values across time and space
+                from limited drifter observations.
+              </p>
+              <p>
+                Traditional methods such as remote sensing, optimal interpolation, and Kriging are
+                limited by linearity assumptions, spatial stationarity, low revisit frequency, cloud
+                occlusion, and weak capacity to model complex spatiotemporal dependencies.
+              </p>
+            </div>
+
+            <div class="slide-right">
+              <img src="pic/nsf.gif" class="gif-image figure-large" alt="NSF dataset animation">
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Problem Definition</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Spatiotemporal Salinity Imputation from Sparse Drifter Trajectories</h3>
-            <p>
-              The task is to reconstruct missing salinity values from sparse and irregularly sampled
-              drifter trajectories over time and geographic grids.
-            </p>
-            <p>
-              In the paper, the drifter observations are represented as a partially observed tensor
-              over time, latitude, longitude, and sensor variables, while a binary mask indicates
-              which values are observed and which are missing.
-            </p>
-            <p>
-              The learning objective is to estimate salinity at arbitrary times and locations in the study
-              area, despite severe sparsity, heterogeneous sensor distributions, and complex ocean dynamics.
-            </p>
+        <div class="slide-block task1-section task1-problem">
+          <div class="slide-header">
+            <div class="slide-bar"></div>
+            <h2 class="slide-title">Problem Definition</h2>
           </div>
 
-          <div class="slide-right">
-            <img src="pic/definition.png" class="top-image" alt="Problem Definition Diagram">
+          <div class="slide-section">
+            <div class="slide-left">
+              <h3>Spatiotemporal Salinity Imputation from Sparse Drifter Trajectories</h3>
+              <p>
+                The task is to reconstruct missing salinity values from sparse and irregularly sampled
+                drifter trajectories over time and geographic grids.
+              </p>
+              <p>
+                In the paper, the drifter observations are represented as a partially observed tensor
+                over time, latitude, longitude, and sensor variables, while a binary mask indicates
+                which values are observed and which are missing.
+              </p>
+              <p>
+                The learning objective is to estimate salinity at arbitrary times and locations in the study
+                area, despite severe sparsity, heterogeneous sensor distributions, and complex ocean dynamics.
+              </p>
+            </div>
+
+            <div class="slide-right">
+              <img src="pic/definition.png" class="figure-medium" alt="Problem Definition Diagram">
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="content-card">
-        <h3>Core Idea</h3>
-        <p>
-          The paper proposes <strong>OASIS</strong>, a diffusion adversarial framework for ocean salinity imputation.
-          Its core idea is to combine three strengths into one unified system:
-        </p>
-        <ul>
-          <li><strong>Normalization</strong> to reduce distribution shift and bias across drifting sensors.</li>
-          <li><strong>Global Dependency Capturing</strong> with a transformer-based module to learn long-range spatiotemporal correlations.</li>
-          <li><strong>Diffusion Adversarial Learning</strong> to progressively refine imputed salinity fields under severe sparsity.</li>
-        </ul>
-        <p>
-          A key design choice is conditioning the model on <strong>tidal height</strong>, which serves as a practical,
-          low-cost proxy for otherwise unmeasured physical drivers.
-        </p>
-      </div>
+        <div class="core-idea-card">
+          <h3>Core Idea</h3>
+          <p>
+            The paper proposes <strong>OASIS</strong>, a diffusion adversarial framework for ocean salinity imputation.
+            Its core idea is to combine three strengths into one unified system.
+          </p>
 
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Methodology</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>OASIS Pipeline</h3>
-            <ul>
-              <li><strong>Step 1:</strong> Normalize drifter observations to reduce sensor-specific distribution shifts.</li>
-              <li><strong>Step 2:</strong> Encode temporal and spatial information with a transformer-based global dependency module.</li>
-              <li><strong>Step 3:</strong> Use a scheduler-guided diffusion adversarial network to generate and refine salinity imputations.</li>
-              <li><strong>Step 4:</strong> Condition the model on tide information to improve physical consistency and predictive accuracy.</li>
-            </ul>
-            <p>
-              The generator reconstructs realistic salinity values, while the discriminator distinguishes
-              real from generated samples after diffusion-based perturbation. Together, they improve both
-              robustness and fidelity.
-            </p>
+          <div class="core-idea-grid">
+            <div class="idea-pill">
+              <strong>Normalization</strong>
+              Reduces distribution shift and bias across drifting sensors.
+            </div>
+            <div class="idea-pill">
+              <strong>Global Dependency Capturing</strong>
+              Learns long-range spatiotemporal correlations using a transformer-based module.
+            </div>
+            <div class="idea-pill">
+              <strong>Diffusion Adversarial Learning</strong>
+              Progressively refines imputed salinity fields under severe sparsity.
+            </div>
           </div>
 
-          <div class="slide-right">
-            <img src="pic/method.png" class="top-image" alt="Methodology Pipeline">
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Results</h2>
+          <p>
+            A key design choice is conditioning the model on <strong>tidal height</strong>, which serves as a practical,
+            low-cost proxy for otherwise unmeasured physical drivers.
+          </p>
         </div>
 
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Key Findings</h3>
-            <ul>
-              <li>OASIS consistently outperforms traditional and neural baselines across multiple benchmark datasets.</li>
-              <li>On the FP Observed dataset, it improves over the best baseline in MAE, RMSE, and MAPE.</li>
-              <li>It captures both large-scale salinity gradients and localized variations under sparse sampling.</li>
-              <li>Ablation studies show that normalization, global dependency capturing, and scheduler diffusion all contribute substantially.</li>
-            </ul>
-            <p>
-              The paper also shows that tide information becomes useful when integrated through the proposed framework,
-              whereas naive inclusion in simpler baselines can provide only marginal or inconsistent benefits.
-            </p>
+        <div class="slide-block task1-section task1-method">
+          <div class="slide-header">
+            <div class="slide-bar"></div>
+            <h2 class="slide-title">Methodology</h2>
           </div>
 
-          <div class="slide-right">
-            <img src="pic/OASIS_visual.png" class="top-image" alt="OASIS Visualization Results">
+          <div class="slide-section">
+            <div class="slide-left">
+              <h3>OASIS Pipeline</h3>
+              <ul>
+                <li><strong>Step 1:</strong> Normalize drifter observations to reduce sensor-specific distribution shifts.</li>
+                <li><strong>Step 2:</strong> Encode temporal and spatial information with a transformer-based global dependency module.</li>
+                <li><strong>Step 3:</strong> Use a scheduler-guided diffusion adversarial network to generate and refine salinity imputations.</li>
+                <li><strong>Step 4:</strong> Condition the model on tide information to improve physical consistency and predictive accuracy.</li>
+              </ul>
+              <p>
+                The generator reconstructs realistic salinity values, while the discriminator distinguishes
+                real from generated samples after diffusion-based perturbation. Together, they improve both
+                robustness and fidelity.
+              </p>
+            </div>
+
+            <div class="slide-right">
+              <img src="pic/method.png" class="figure-large" alt="Methodology Pipeline">
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-block task1-section task1-results">
+          <div class="slide-header">
+            <div class="slide-bar"></div>
+            <h2 class="slide-title">Results</h2>
+          </div>
+
+          <div class="slide-section">
+            <div class="slide-left">
+              <h3>Key Findings</h3>
+              <ul>
+                <li>OASIS consistently outperforms traditional and neural baselines across multiple benchmark datasets.</li>
+                <li>On the FP Observed dataset, it improves over the best baseline in MAE, RMSE, and MAPE.</li>
+                <li>It captures both large-scale salinity gradients and localized variations under sparse sampling.</li>
+                <li>Ablation studies show that normalization, global dependency capturing, and scheduler diffusion all contribute substantially.</li>
+              </ul>
+              <p>
+                The paper also shows that tide information becomes useful when integrated through the proposed framework,
+                whereas naive inclusion in simpler baselines can provide only marginal or inconsistent benefits.
+              </p>
+            </div>
+
+            <div class="slide-right">
+              <img src="pic/OASIS_visual.png" class="figure-medium" alt="OASIS Visualization Results">
+            </div>
           </div>
         </div>
       </div>
