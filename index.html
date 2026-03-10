@@ -16,6 +16,8 @@
       --shadow:0 12px 28px rgba(15,23,42,.06);
       --bg1:#f5f7fb;
       --bg2:#fcfdff;
+      --blue:#1d4f82;
+      --blue-soft:#eaf3fb;
     }
 
     *{box-sizing:border-box;}
@@ -157,15 +159,6 @@
       border-radius:999px;
       padding:.85rem 1.35rem;
       font-weight:700;
-    }
-
-    .content-card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:24px;
-      box-shadow:var(--shadow);
-      padding:1.7rem;
-      margin-bottom:1.3rem;
     }
 
     .page-title{
@@ -493,6 +486,177 @@
       background:#fff;
     }
 
+    /* ===== Home page showcase style ===== */
+    .home-showcase{
+      display:flex;
+      flex-direction:column;
+      gap:1.8rem;
+    }
+
+    .home-section{
+      background:linear-gradient(180deg,#ffffff 0%, #fbfdff 100%);
+      border:1px solid var(--border);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:2rem;
+    }
+
+    .home-section-grid{
+      display:grid;
+      grid-template-columns:minmax(0, 1.1fr) minmax(360px, .95fr);
+      gap:2rem;
+      align-items:center;
+    }
+
+    .home-section-grid.reverse{
+      grid-template-columns:minmax(360px, .95fr) minmax(0, 1.1fr);
+    }
+
+    .home-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      font-size:.85rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--blue);
+      margin-bottom:.9rem;
+      background:var(--blue-soft);
+      border:1px solid rgba(29,79,130,.08);
+      border-radius:999px;
+      padding:.45rem .8rem;
+    }
+
+    .home-eyebrow::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--blue);
+      display:inline-block;
+    }
+
+    .home-section h2{
+      margin:0 0 .9rem 0;
+      font-size:2.1rem;
+      line-height:1.18;
+      letter-spacing:-.03em;
+      color:#162132;
+    }
+
+    .home-section p{
+      color:#475569;
+      font-size:1.02rem;
+      line-height:1.8;
+      margin-bottom:1rem;
+    }
+
+    .home-feature-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:1rem;
+      margin-top:1.25rem;
+    }
+
+    .home-feature{
+      background:#fff;
+      border:1px solid rgba(15,23,42,.06);
+      border-radius:18px;
+      padding:1rem 1rem 1.05rem;
+      box-shadow:0 6px 16px rgba(15,23,42,.03);
+    }
+
+    .home-feature h3{
+      margin:0 0 .45rem 0;
+      font-size:1.02rem;
+      color:#1e293b;
+    }
+
+    .home-feature p{
+      margin:0;
+      font-size:.95rem;
+      line-height:1.65;
+      color:#64748b;
+    }
+
+    .home-visual-card{
+      background:linear-gradient(180deg,#ffffff 0%, #f7fbff 100%);
+      border:1px solid rgba(15,23,42,.06);
+      border-radius:24px;
+      padding:1rem;
+      box-shadow:0 12px 26px rgba(15,23,42,.06);
+    }
+
+    .home-visual-stack{
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+
+    .home-visual-stack img{
+      width:100%;
+      display:block;
+      border-radius:16px;
+      border:1px solid rgba(15,23,42,.07);
+      box-shadow:0 8px 20px rgba(15,23,42,.07);
+      background:#fff;
+    }
+
+    .home-map{
+      aspect-ratio:16/9;
+      object-fit:contain;
+    }
+
+    .home-photo{
+      aspect-ratio:4/3;
+      object-fit:cover;
+    }
+
+    .home-highlight-list{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:.9rem;
+      margin-top:1.15rem;
+    }
+
+    .home-highlight{
+      display:flex;
+      gap:.9rem;
+      align-items:flex-start;
+      background:#fff;
+      border:1px solid rgba(15,23,42,.06);
+      border-radius:18px;
+      padding:1rem 1rem;
+    }
+
+    .home-highlight-icon{
+      flex:0 0 auto;
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      background:#eef5fb;
+      color:var(--blue);
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.95rem;
+    }
+
+    .home-highlight h3{
+      margin:0 0 .25rem 0;
+      font-size:1rem;
+      color:#1e293b;
+    }
+
+    .home-highlight p{
+      margin:0;
+      font-size:.95rem;
+      line-height:1.65;
+      color:#64748b;
+    }
+
     footer.container{
       padding-bottom:2rem;
       max-width:1280px;
@@ -509,7 +673,9 @@
 
     @media (max-width: 1100px){
       .task1-section .slide-section,
-      .progress-section .slide-section{
+      .progress-section .slide-section,
+      .home-section-grid,
+      .home-section-grid.reverse{
         grid-template-columns:1fr;
       }
 
@@ -528,7 +694,8 @@
     }
 
     @media (max-width: 980px){
-      .core-idea-grid{
+      .core-idea-grid,
+      .home-feature-grid{
         grid-template-columns:1fr;
       }
     }
@@ -553,7 +720,8 @@
         max-height:40px;
       }
 
-      .slide-block{
+      .slide-block,
+      .home-section{
         padding:1.45rem 1.1rem;
         border-radius:20px;
       }
@@ -571,7 +739,8 @@
         padding-left:0;
       }
 
-      .slide-left h3{
+      .slide-left h3,
+      .home-section h2{
         font-size:1.48rem;
       }
 
@@ -630,7 +799,7 @@
         <h1>Ocean Salinity Imputation using Sparse Drifter Trajectories</h1>
 
         <p class="subtitle">
-          A research project focused on leveraging sparse drifter trajectories for ocean salinity reconstruction.
+          A research project focused on leveraging sparse drifter trajectories for ocean salinity reconstruction across heterogeneous marine environments.
         </p>
 
         <div class="hero-actions">
@@ -639,73 +808,106 @@
         </div>
       </section>
 
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Background</h2>
-        </div>
+      <div class="home-showcase">
+        <section class="home-section">
+          <div class="home-section-grid">
+            <div>
+              <div class="home-eyebrow">Project Overview</div>
+              <h2>Ocean drifters provide one of the most direct windows into real marine dynamics</h2>
+              <p>
+                Ocean drifters are autonomous observing platforms that continuously collect in-situ measurements
+                across vast and often inaccessible ocean regions. Unlike purely remote sensing systems, they follow
+                the movement of water masses and capture fine-grained temporal changes in the marine environment.
+              </p>
+              <p>
+                This makes drifter observations especially valuable for monitoring salinity, temperature, waves,
+                currents, and atmosphere–ocean interactions, while also supporting climate analysis, forecasting,
+                and ecosystem studies.
+              </p>
 
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Ocean Drifter: Pillars of Modern Marine Observation</h3>
-            <p>
-              <span class="section-label">1. Key Role:</span>
-              Autonomous platforms providing continuous, real-time data from inaccessible ocean regions
-              (~71% Earth's surface).
-            </p>
+              <div class="home-feature-grid">
+                <div class="home-feature">
+                  <h3>Continuous observation</h3>
+                  <p>Drifters provide real-time measurements along evolving ocean trajectories rather than sparse static snapshots.</p>
+                </div>
+                <div class="home-feature">
+                  <h3>Large spatial coverage</h3>
+                  <p>They help collect information from remote ocean regions that are difficult to monitor consistently by other means.</p>
+                </div>
+                <div class="home-feature">
+                  <h3>Climate relevance</h3>
+                  <p>Long-term time series from drifters are useful for identifying warming, circulation shifts, and other ocean changes.</p>
+                </div>
+                <div class="home-feature">
+                  <h3>In-situ validation</h3>
+                  <p>Drifter records complement satellite products by providing direct field measurements for validation and interpretation.</p>
+                </div>
+              </div>
+            </div>
 
-            <p class="section-label">2. Core Functions:</p>
-            <ul>
-              <li>Monitor essential oceanographic variables (EOVs): Temperature, Salinity, Waves, Currents, Atmospheric-Ocean fluxes.</li>
-              <li>Support climate modeling, weather forecasting, and ecosystem studies.</li>
-            </ul>
-
-            <p class="section-label">3. Strategic Value:</p>
-            <ul>
-              <li>Complement satellite/remote sensing by providing in-situ validation and subsurface measurements.</li>
-              <li>Enable long-term time-series data critical for detecting climate trends such as ocean warming and acidification.</li>
-            </ul>
+            <div class="home-visual-card">
+              <div class="home-visual-stack">
+                <img src="pic/Picture5.png" class="home-map" alt="Global Drifter Array Map">
+                <img src="pic/Picture6.jpg" class="home-photo" alt="Drifter Deployment">
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div class="slide-right">
-            <img src="pic/Picture5.png" class="top-image" alt="Global Drifter Array Map">
-            <img src="pic/Picture6.jpg" class="bottom-image" alt="Drifter Deployment">
+        <section class="home-section">
+          <div class="home-section-grid reverse">
+            <div class="home-visual-card">
+              <div class="home-visual-stack">
+                <img src="pic/Picture5.png" class="home-map" alt="Global Drifter Array Map">
+                <img src="pic/Picture6.jpg" class="home-photo" alt="Drifter Deployment">
+              </div>
+            </div>
+
+            <div>
+              <div class="home-eyebrow">Why Drifters Matter</div>
+              <h2>They reveal both the promise and the difficulty of salinity reconstruction</h2>
+              <p>
+                Drifters equipped with hydrological sensors can directly measure salinity along their trajectories,
+                which is particularly useful in nearshore and coastal zones where salinity changes rapidly and
+                satellite measurements may be noisy or too coarse.
+              </p>
+
+              <div class="home-highlight-list">
+                <div class="home-highlight">
+                  <div class="home-highlight-icon">A</div>
+                  <div>
+                    <h3>Direct, fine-grained observation</h3>
+                    <p>Drifters capture localized salinity variation along real ocean movement pathways, offering detailed information that is difficult to infer from low-resolution observations alone.</p>
+                  </div>
+                </div>
+
+                <div class="home-highlight">
+                  <div class="home-highlight-icon">B</div>
+                  <div>
+                    <h3>Complex coastal suitability</h3>
+                    <p>They are especially useful in dynamic coastal and offshore regions where freshwater inflow, tides, and local circulation produce strong variability.</p>
+                  </div>
+                </div>
+
+                <div class="home-highlight">
+                  <div class="home-highlight-icon">C</div>
+                  <div>
+                    <h3>Sparsity and long-range dependency</h3>
+                    <p>Because drifter tracks are irregular and sparse, reconstructing complete salinity fields requires models that can capture broad spatiotemporal relationships.</p>
+                  </div>
+                </div>
+
+                <div class="home-highlight">
+                  <div class="home-highlight-icon">D</div>
+                  <div>
+                    <h3>Instability and distribution bias</h3>
+                    <p>Dynamic ocean conditions and heterogeneous sensor behavior may introduce non-stationarity, making robust salinity imputation particularly challenging.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <div class="slide-block">
-        <div class="slide-header">
-          <div class="slide-bar"></div>
-          <h2 class="slide-title">Background</h2>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-left">
-            <h3>Ocean Drifter: Advantages and Challenges</h3>
-            <ul>
-              <li>
-                <strong>Advantages</strong>
-                <ul>
-                  <li><strong>Direct observation:</strong> Drifters equipped with hydrological sensors can be used to measure salinity along the drifter track.</li>
-                  <li><strong>Suitable for complex nearshore environments:</strong> Salinity in offshore/coastal areas fluctuates dramatically. In these regions, satellite salinity data suffers from low resolution and high noise, whereas drifters can capture finer-grained dynamic variations.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Challenges</strong>
-                <ul>
-                  <li><strong>Data Sparsity:</strong> Insufficient capacity to capture long-range dependencies across sparse drifter tracks.</li>
-                  <li><strong>Instability or Bias:</strong> Heterogeneous data distributions caused by drifting sensors and dynamic ocean conditions.</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-          <div class="slide-right">
-            <img src="pic/Picture5.png" class="top-image" alt="Global Drifter Array Map">
-            <img src="pic/Picture6.jpg" class="bottom-image" alt="Drifter Deployment">
-          </div>
-        </div>
+        </section>
       </div>
     </section>
 
@@ -969,3 +1171,5 @@
   </script>
 </body>
 </html>
+
+这就是目前的完整代码，我的意思是你帮我修改主页部分的样式和内容，其他部分保持不变就好了，你重新输出完整代码吧
